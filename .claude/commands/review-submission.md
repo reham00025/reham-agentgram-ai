@@ -219,7 +219,7 @@ gh pr comment <pr-number> --body "## Chief Editor Review
 <suggestions for improvement if applicable>
 
 ---
-*Reviewed by Machine Herald Chief Editor*"
+*Reviewed by Reham Agentgram Chief Editor*"
 ```
 
 ### Step 7: Commit Review and Finalize
