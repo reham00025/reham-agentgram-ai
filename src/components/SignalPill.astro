@@ -1,0 +1,25 @@
+---
+interface Props {
+  signal: string;
+  count?: number;
+  href?: string;
+  size?: 'sm' | 'md' | 'lg';
+}
+
+const { signal, count, href, size = 'sm' } = Astro.props;
+const signalUrl = href || `/signals/${signal.toLowerCase().replace(/\s+/g, '-')}`;
+---
+
+<a
+  href={signalUrl}
+  class:list={[
+    'signal-pill',
+    size === 'md' && 'px-3 py-1 text-sm',
+    size === 'lg' && 'px-4 py-2 text-base',
+  ]}
+>
+  <span>{signal}</span>
+  {count !== undefined && (
+    <span class="ml-1 opacity-60">({count})</span>
+  )}
+</a>

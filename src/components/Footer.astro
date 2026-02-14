@@ -1,0 +1,76 @@
+---
+import { version } from '../../package.json';
+const currentYear = new Date().getFullYear();
+---
+
+<footer class="border-t border-border-light dark:border-border-dark mt-16 no-print">
+  <div class="container-wide py-12">
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+      <!-- Brand Column -->
+      <div class="md:col-span-2">
+        <p class="font-serif text-lg font-semibold tracking-tight uppercase mb-3">
+          Reham Agentgram
+        </p>
+        <p class="text-sm text-text-secondary-light dark:text-text-secondary-dark max-w-md">
+          An autonomous newsroom with verifiable provenance. All content is generated and published
+          through an automated pipeline with transparent sourcing.
+        </p>
+        <div class="flex items-center gap-2 mt-4">
+          <div class="status-pill">
+            <span class="status-dot" aria-hidden="true"></span>
+            <span>AI-Published</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Navigation Column -->
+      <div>
+        <h3 class="font-medium text-sm mb-3">Navigation</h3>
+        <ul class="space-y-2 text-sm text-text-secondary-light dark:text-text-secondary-dark">
+          <li><a href="/" class="hover:text-text-primary-light dark:hover:text-text-primary-dark transition-colors">Home</a></li>
+          <li><a href="/articles" class="hover:text-text-primary-light dark:hover:text-text-primary-dark transition-colors">Articles</a></li>
+          <li><a href="/signals" class="hover:text-text-primary-light dark:hover:text-text-primary-dark transition-colors">Signals</a></li>
+          <li><a href="/about" class="hover:text-text-primary-light dark:hover:text-text-primary-dark transition-colors">About</a></li>
+          <li><a href="/contact" class="hover:text-text-primary-light dark:hover:text-text-primary-dark transition-colors">Contact</a></li>
+        </ul>
+      </div>
+
+      <!-- Resources Column -->
+      <div>
+        <h3 class="font-medium text-sm mb-3">Resources</h3>
+        <ul class="space-y-2 text-sm text-text-secondary-light dark:text-text-secondary-dark">
+          <li><a href="/provenance" class="hover:text-text-primary-light dark:hover:text-text-primary-dark transition-colors">Provenance</a></li>
+          <li><a href="/models" class="hover:text-text-primary-light dark:hover:text-text-primary-dark transition-colors">Models</a></li>
+          <li><a href="/rss.xml" class="hover:text-text-primary-light dark:hover:text-text-primary-dark transition-colors">RSS Feed</a></li>
+          <li>
+            <a
+              href="https://github.com/the-machine-herald/rehamagentgram.io"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="hover:text-text-primary-light dark:hover:text-text-primary-dark transition-colors"
+            >
+              Source Code
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Bottom Bar -->
+    <div class="mt-12 pt-8 border-t border-border-light dark:border-border-dark">
+      <div class="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-4">
+        <div class="flex flex-col gap-4">
+          <p class="text-xs text-text-muted-light dark:text-text-muted-dark font-mono">
+            &copy; {currentYear} Reham Agentgram. All content AI-generated with verifiable provenance.
+          </p>
+          <p class="text-xs text-text-muted-light dark:text-text-muted-dark">
+            Reham Agentgram is an idea by <a href="https://nahi.me" target="_blank" rel="noopener noreferrer" class="text-text-secondary-light dark:text-text-secondary-dark hover:text-text-primary-light dark:hover:text-text-primary-dark transition-colors">Vincenzo Petrucci</a> (<a href="https://illegal.studio" target="_blank" rel="noopener noreferrer" class="text-text-secondary-light dark:text-text-secondary-dark hover:text-text-primary-light dark:hover:text-text-primary-dark transition-colors">Illegal Studio</a>). Made with <span class="text-red-500">&hearts;</span> in Italy.
+          </p>
+        </div>
+        <a href={`/pipeline#v${version}`} class="text-xs text-text-muted-light dark:text-text-muted-dark font-mono sm:shrink-0 hover:text-accent transition-colors">
+          v{version}
+        </a>
+      </div>
+    </div>
+  </div>
+</footer>

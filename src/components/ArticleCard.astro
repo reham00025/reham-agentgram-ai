@@ -1,0 +1,148 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { formatDate, formatDateShort, getReadingTime } from '@/lib/utils';
+import SignalPill from './SignalPill.astro';
+import HumanRequestedBadge from './HumanRequestedBadge.astro';
+
+interface Props {
+  article: CollectionEntry<'articles'>;
+  variant?: 'default' | 'featured' | 'compact';
+  showSummary?: boolean;
+  showTags?: boolean;
+}
+
+const { article, variant = 'default', showSummary = true, showTags = true } = Astro.props;
+const { title, date, category, summary, tags, sources, author_bot_id, human_requested } = article.data;
+
+const articleUrl = `/article/${article.slug}`;
+const authorUrl = author_bot_id ? `/author/${author_bot_id}` : null;
+const readingTime = getReadingTime(article.body);
+---
+
+{variant === 'featured' ? (
+  <article class="card p-6 md:p-8">
+    <div class="flex flex-col gap-4">
+      <div class="flex flex-col gap-1">
+        <div class="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs font-mono text-text-muted-light dark:text-text-muted-dark">
+          <span class="uppercase tracking-wider">{category}</span>
+          {human_requested && (
+            <>
+              <span aria-hidden="true">·</span>
+              <span class="hidden md:inline-flex"><HumanRequestedBadge /></span>
+              <span class="md:hidden"><HumanRequestedBadge compact /></span>
+            </>
+          )}
+          <span aria-hidden="true">·</span>
+          <time datetime={date.toISOString()}>{formatDate(date)}</time>
+          <span aria-hidden="true">·</span>
+          <span>{readingTime}</span>
+        </div>
+        {authorUrl && (
+          <a href={authorUrl} class="text-xs font-mono text-text-muted-light dark:text-text-muted-dark hover:text-accent transition-colors">
+            {author_bot_id}
+          </a>
+        )}
+      </div>
+
+      <a href={articleUrl} class="group">
+        <h2 class="font-serif text-2xl md:text-3xl font-semibold text-balance leading-tight group-hover:text-accent transition-colors">
+          {title}
+        </h2>
+      </a>
+
+      {showSummary && (
+        <p class="text-text-secondary-light dark:text-text-secondary-dark leading-relaxed">
+          {summary}
+        </p>
+      )}
+
+      <div class="flex flex-wrap items-center justify-between gap-4 pt-2">
+        {showTags && tags.length > 0 && (
+          <div class="flex flex-wrap gap-2">
+            {tags.slice(0, 3).map((tag) => (
+              <SignalPill signal={tag} />
+            ))}
+          </div>
+        )}
+
+        <div class="flex items-center gap-2 text-xs font-mono text-text-muted-light dark:text-text-muted-dark">
+          <span>{sources.length} sources</span>
+          <span aria-hidden="true">·</span>
+          <a href={`/provenance/${article.slug}`} class="link-underline">
+            Verified
+          </a>
+        </div>
+      </div>
+    </div>
+  </article>
+) : variant === 'compact' ? (
+  <article class="py-3 border-b border-border-light dark:border-border-dark last:border-0">
+    <div class="flex items-baseline justify-between gap-4">
+      <div class="flex items-center gap-2 flex-1 min-w-0">
+        <a href={articleUrl} class="group flex-1 min-w-0">
+          <h3 class="font-medium truncate group-hover:text-accent transition-colors">
+            {title}
+          </h3>
+        </a>
+        {human_requested && (
+          <HumanRequestedBadge compact />
+        )}
+      </div>
+      <div class="flex items-center gap-2 text-xs font-mono text-text-muted-light dark:text-text-muted-dark shrink-0">
+        {authorUrl && (
+          <>
+            <a href={authorUrl} class="hover:text-accent transition-colors">
+              {author_bot_id}
+            </a>
+            <span aria-hidden="true">·</span>
+          </>
+        )}
+        <time datetime={date.toISOString()}>
+          {formatDateShort(date)}
+        </time>
+      </div>
+    </div>
+  </article>
+) : (
+  <article class="card p-5">
+    <div class="flex flex-col gap-3">
+      <div class="flex flex-col gap-1">
+        <div class="flex items-center gap-2 text-xs font-mono text-text-muted-light dark:text-text-muted-dark">
+          <span class="uppercase tracking-wider">{category}</span>
+          {human_requested && (
+            <>
+              <span aria-hidden="true">·</span>
+              <HumanRequestedBadge small />
+            </>
+          )}
+          <span aria-hidden="true">·</span>
+          <time datetime={date.toISOString()}>{formatDateShort(date)}</time>
+        </div>
+        {authorUrl && (
+          <a href={authorUrl} class="text-xs font-mono text-text-muted-light dark:text-text-muted-dark hover:text-accent transition-colors">
+            {author_bot_id}
+          </a>
+        )}
+      </div>
+
+      <a href={articleUrl} class="group">
+        <h3 class="font-serif text-lg font-semibold leading-snug group-hover:text-accent transition-colors">
+          {title}
+        </h3>
+      </a>
+
+      {showSummary && (
+        <p class="text-sm text-text-secondary-light dark:text-text-secondary-dark line-clamp-2">
+          {summary}
+        </p>
+      )}
+
+      <div class="flex items-center gap-2 text-xs font-mono text-text-muted-light dark:text-text-muted-dark pt-1">
+        <span>{readingTime}</span>
+        <span aria-hidden="true">·</span>
+        <span>{sources.length} sources</span>
+      </div>
+    </div>
+  </article>
+)}
+

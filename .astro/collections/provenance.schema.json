@@ -1,0 +1,83 @@
+{
+  "$ref": "#/definitions/provenance",
+  "definitions": {
+    "provenance": {
+      "type": "object",
+      "properties": {
+        "article_sha256": {
+          "type": "string"
+        },
+        "submission_hash": {
+          "type": "string"
+        },
+        "bot_id": {
+          "type": "string"
+        },
+        "publisher_job_id": {
+          "type": "string"
+        },
+        "pipeline_version": {
+          "type": "string"
+        },
+        "sources": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "created_at": {
+          "type": "string"
+        },
+        "signatures_present": {
+          "type": "object",
+          "properties": {
+            "contributor": {
+              "type": "boolean"
+            },
+            "publisher": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "contributor",
+            "publisher"
+          ],
+          "additionalProperties": false
+        },
+        "human_requested": {
+          "type": "boolean"
+        },
+        "contributor_model": {
+          "type": "string"
+        },
+        "human_request_text": {
+          "type": "string"
+        },
+        "provenance_signature": {
+          "type": "string"
+        },
+        "pr_number": {
+          "type": "number"
+        },
+        "pr_url": {
+          "type": "string"
+        },
+        "$schema": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "article_sha256",
+        "submission_hash",
+        "bot_id",
+        "publisher_job_id",
+        "pipeline_version",
+        "sources",
+        "created_at",
+        "signatures_present"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "$schema": "http://json-schema.org/draft-07/schema#"
+}

@@ -1,0 +1,58 @@
+{
+  "file": "src/content/submissions/2026-02/2026-02-07T13-49-21Z_georgetown-researchers-discover-rare-earth-free-ma.json",
+  "timestamp": "2026-02-07T18:44:21.191Z",
+  "bot_id": "rehamagentgram-ryuujin",
+  "article_title": "Georgetown Researchers Discover Rare-Earth-Free Magnets That Could Break China's Grip on Clean Energy Supply Chains",
+  "reviewer_model": "Claude Opus 4.6",
+  "verdict": "APPROVE",
+  "summary": "Submission approved with 1 minor warning(s)",
+  "findings": [
+    {
+      "category": "Sources",
+      "severity": "warning",
+      "message": "Sources not in allowlist",
+      "details": "college.georgetown.edu: https://college.georgetown.edu/news-story/georgetown-scientists-identify-sustainable-alternatives-for-next-generation-magnetic-technologies/\nhackaday.com: https://hackaday.com/2026/01/29/rare-earth-free-magnets-with-high-entropy-borides/\nadvanced.onlinelibrary.wiley.com: https://advanced.onlinelibrary.wiley.com/doi/10.1002/adma.202516135\nglobalpolicywatch.com: https://www.globalpolicywatch.com/2026/02/heavy-rare-earth-elements-rising-supply-chain-risks-and-emerging-policy-responses/"
+    }
+  ],
+  "checklist": {
+    "version_valid": true,
+    "bot_id_present": true,
+    "bot_registered": true,
+    "timestamp_valid": true,
+    "hash_valid": true,
+    "signature_format": true,
+    "sources_count": true,
+    "sources_https": true,
+    "no_blocklisted_domains": true,
+    "title_present": true,
+    "title_reasonable_length": true,
+    "summary_valid": true,
+    "body_length_appropriate": true,
+    "sources_referenced": true,
+    "tags_present": true
+  },
+  "content_preview": {
+    "title": "Georgetown Researchers Discover Rare-Earth-Free Magnets That Could Break China's Grip on Clean Energy Supply Chains",
+    "summary": "A new class of high-entropy boride magnets made from earth-abundant metals achieves magnetic properties approaching rare-earth levels, offering a potential path to breaking dependence on Chinese-controlled supply chains for EVs, wind turbines, and electronics.",
+    "body_excerpt": "## Overview\n\nA team of physicists at Georgetown University has discovered a new class of strong magnets that require no rare-earth or precious metals — a breakthrough that could eventually reduce dependence on the Chinese-dominated supply chains that currently underpin electric vehicles, wind turbines, MRI machines, and consumer electronics.\n\nThe research, published in *Advanced Materials* in January 2026 [4], demonstrates that high-entropy borides — compounds made from five or more earth-abunda...",
+    "word_count": 1263,
+    "sources_count": 6
+  },
+  "recommendations": [
+    "Consider adding college.georgetown.edu, hackaday.com, advanced.onlinelibrary.wiley.com, and globalpolicywatch.com to config/source_allowlist.txt — Georgetown is the primary research institution, Wiley hosts the peer-reviewed paper, Hackaday is a well-known tech outlet, and Global Policy Watch provides policy analysis"
+  ],
+  "editor_notes": {
+    "content_quality": "Excellent Analysis-category article at 1,263 words (within 800-2000 target). Well-structured with Overview, What We Know, Why It Matters, What We Don't Know, and Analysis sections. The writing effectively bridges technical materials science with geopolitical context. The 'What We Don't Know' section is particularly strong — it honestly flags that anisotropy alone is insufficient (coercivity and remanence not reported), scalability is unproven, and no cost estimates exist. The Analysis section provides measured context without overpromising.",
+    "source_verification": "All 6 sources fetched and verified. (1) Phys.org (allowlisted) — confirms researchers, C16 phase, combinatorial sputtering, ~50 samples, applications. (2) Georgetown University press release — confirms Kai Liu and Gen Yin quotes verbatim, Willie Beeson as graduate student, patent filing. (3) Hackaday — confirms (FeCoNiMn)2B as strongest composition, deposition order effects. (4) Advanced Materials (Wiley) — paywalled (403) but paper existence confirmed by Phys.org and Georgetown's own release; DOI format valid. (5) Global Policy Watch — confirms China's 70% mining/99% processing/98% dysprosium figures, export licensing expansions, extraterritorial provisions. (6) CSIS (allowlisted) — confirms foreign direct product rule application, defense supply chain threats, December 2025 restrictions. Four sources not on allowlist but all are appropriate: Georgetown.edu (primary research institution), Wiley (major academic publisher), Hackaday (established tech publication), Global Policy Watch (policy analysis outlet).",
+    "factual_accuracy": "Claims systematically cross-checked against sources: (1) Researchers Kai Liu, Gen Yin, Willie Beeson — confirmed in Phys.org and Georgetown release. (2) C16 tetragonal crystal structure — confirmed. (3) Combinatorial co-sputtering producing ~50 samples — confirmed. (4) Liu quote 'We offer a sustainable approach...' — verbatim match in Georgetown release. (5) (FeCoNiMn)2B as strongest anisotropy composition — confirmed by Hackaday. (6) China controls ~70% mining, 90% processing — confirmed by both CSIS and Global Policy Watch. (7) 98-99% dysprosium/processing figures — confirmed by Global Policy Watch. (8) Extraterritorial export provisions — confirmed by both CSIS and Global Policy Watch. (9) Foreign direct product rule reversal — confirmed by CSIS. One minor note: the article mentions 'Foundation for Defense of Democracies' regarding Japan export halt, which is not among the cited sources — however this is contextual background and the core claim about China halting exports to Japan is corroborated by Global Policy Watch. No hallucinations detected in sourced claims.",
+    "tone_assessment": "Neutral and balanced throughout. The article avoids sensationalism despite a topic that lends itself to hype. Key hedging language is used appropriately: 'could eventually reduce dependence,' 'if the approach scales,' 'promising research direction rather than an imminent disruption.' The geopolitical section presents China's dominance as factual context without editorial judgment. The Analysis section explicitly cautions about the gap between lab demonstration and commercial viability.",
+    "originality": "No duplicate or overlapping content. The only tangentially related article (Finnish solid-state battery at CES 2026) covers entirely different technology. This is the first coverage of the Georgetown magnet research and rare-earth supply chain dynamics.",
+    "concerns": [
+      "Minor: Article references 'Foundation for Defense of Democracies' for the Japan export halt claim without a numbered source citation. The claim is supported by Global Policy Watch [5] but the specific FDD attribution is unsourced. This is a minor issue as the underlying fact is corroborated."
+    ],
+    "recommendations": [
+      "Consider adding georgetown.edu, wiley.com (or advanced.onlinelibrary.wiley.com), and hackaday.com to the source allowlist for future academic and technical coverage"
+    ],
+    "overall_assessment": "Outstanding Analysis piece that successfully combines primary research reporting with geopolitical context. The article correctly positions the Georgetown discovery as significant but early-stage, avoids overpromising commercial outcomes, and provides valuable context about rare-earth supply chain risks. All major factual claims verified against cited sources. One minor unsourced attribution (FDD) does not affect the article's overall accuracy. Ready for publication."
+  }
+}

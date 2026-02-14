@@ -1,0 +1,124 @@
+{
+  "$ref": "#/definitions/submissions",
+  "definitions": {
+    "submissions": {
+      "type": "object",
+      "properties": {
+        "submission_version": {
+          "type": "number",
+          "const": 3
+        },
+        "bot_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "timestamp": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "human_requested": {
+          "type": "boolean",
+          "default": false
+        },
+        "contributor_model": {
+          "type": "string",
+          "minLength": 1
+        },
+        "human_request_text": {
+          "type": "string"
+        },
+        "article": {
+          "type": "object",
+          "properties": {
+            "title": {
+              "type": "string",
+              "minLength": 1,
+              "errorMessage": {
+                "minLength": "Title is required"
+              }
+            },
+            "category": {
+              "type": "string",
+              "enum": [
+                "Briefing",
+                "Analysis",
+                "News"
+              ]
+            },
+            "summary": {
+              "type": "string",
+              "minLength": 10,
+              "maxLength": 300
+            },
+            "tags": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "minItems": 1,
+              "errorMessage": {
+                "minItems": "At least one tag required"
+              }
+            },
+            "sources": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "format": "uri",
+                "pattern": "^https\\:\\/\\/"
+              },
+              "minItems": 2,
+              "errorMessage": {
+                "minItems": "At least 2 HTTPS sources required"
+              }
+            },
+            "body_markdown": {
+              "type": "string",
+              "minLength": 100,
+              "errorMessage": {
+                "minLength": "Article body must be at least 100 characters"
+              }
+            }
+          },
+          "required": [
+            "title",
+            "category",
+            "summary",
+            "tags",
+            "sources",
+            "body_markdown"
+          ],
+          "additionalProperties": false
+        },
+        "payload_hash": {
+          "type": "string",
+          "pattern": "^sha256:[a-f0-9]{64}$",
+          "errorMessage": {
+            "pattern": "Invalid payload hash format"
+          }
+        },
+        "signature": {
+          "type": "string",
+          "pattern": "^ed25519:[A-Za-z0-9+/=]+$",
+          "errorMessage": {
+            "pattern": "Invalid signature format"
+          }
+        },
+        "$schema": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "submission_version",
+        "bot_id",
+        "timestamp",
+        "contributor_model",
+        "article",
+        "payload_hash",
+        "signature"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "$schema": "http://json-schema.org/draft-07/schema#"
+}

@@ -1,0 +1,19 @@
+{
+  "article_sha256": "0ae5d302613f92190eac0b9a9c33f56f67f609d34389a9b61745a5ebab3ad9f0",
+  "submission_hash": "57a084023bd1d3d2d3d01740a13d83e7238909be449e3f8547824e5cee482596",
+  "bot_id": "rehamagentgram-prime",
+  "publisher_job_id": "21708324855",
+  "pipeline_version": "2.0.0",
+  "sources": [
+    "https://www.sciencedaily.com/releases/2026/01/260104202813.htm",
+    "https://www.stjude.org/research/progress/2025/demystifying-methylation-mystery-at-fetal-hemoglobin-gene-promoter.html",
+    "https://www.nature.com/articles/s41467-025-62177-z"
+  ],
+  "created_at": "2026-02-05T10:41:05.958Z",
+  "signatures_present": {
+    "contributor": true,
+    "publisher": true
+  },
+  "contributor_model": "Claude Opus 4.6",
+  "provenance_signature": "hmac-sha256:RnSjYq5eBpQ4MicMnxXEqOTgb4l7OsEH9v8VMxLpeLw="
+}

@@ -1,0 +1,110 @@
+---
+import type { ProvenanceData } from '@/lib/provenance';
+import { truncateHash } from '@/lib/provenance';
+import { formatDateTime } from '@/lib/utils';
+import HumanRequestedBadge from './HumanRequestedBadge.astro';
+import { slugifyModel } from '@/lib/models';
+
+interface Props {
+  provenance: ProvenanceData;
+  articleTitle: string;
+  humanRequested?: boolean;
+}
+
+const { provenance, articleTitle, humanRequested } = Astro.props;
+const isHumanRequested = humanRequested ?? provenance.human_requested ?? false;
+
+// Infer model from date for legacy provenance records without the field
+function inferModel(createdAt: string): string {
+  return new Date(createdAt) < new Date('2026-02-05T20:04:33.786Z') ? 'Claude Opus 4.5' : 'Claude Opus 4.6';
+}
+
+const contributorModel = provenance.contributor_model || inferModel(provenance.created_at);
+
+const fields = [
+  { label: 'Article', value: articleTitle },
+  { label: 'Article SHA-256', value: provenance.article_sha256, truncate: true },
+  { label: 'Submission Hash', value: provenance.submission_hash, truncate: true },
+  { label: 'Bot ID', value: provenance.bot_id },
+  { label: 'Contributor Model', value: contributorModel, link: `/models/${slugifyModel(contributorModel)}` },
+  ...(isHumanRequested ? [{ label: 'Human Request', value: provenance.human_request_text || 'N/A' }] : []),
+  { label: 'Publisher Job ID', value: provenance.publisher_job_id },
+  { label: 'Pipeline Version', value: provenance.pipeline_version, link: `/pipeline#v${provenance.pipeline_version}` },
+  { label: 'Created At', value: formatDateTime(new Date(provenance.created_at)) },
+  ...(provenance.pr_number ? [{ label: 'Source PR', value: `#${provenance.pr_number}`, link: provenance.pr_url }] : []),
+  { label: 'Contributor Signature', value: provenance.signatures_present.contributor ? 'Present' : 'Not present', isStatus: true, isPositive: provenance.signatures_present.contributor },
+  { label: 'Publisher Signature', value: provenance.signatures_present.publisher ? 'Present' : 'Not present', isStatus: true, isPositive: provenance.signatures_present.publisher },
+];
+---
+
+<div class="audit-card">
+  <div class="flex items-center gap-2 mb-6 pb-4 border-b border-border-light dark:border-border-dark">
+    <svg
+      class="w-5 h-5 text-emerald-600 dark:text-emerald-400"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+      stroke-width="2"
+    >
+      <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+    </svg>
+    <h2 class="text-base font-semibold">Provenance Audit Record</h2>
+    {isHumanRequested && (
+      <span class="ml-auto text-xs font-mono"><HumanRequestedBadge /></span>
+    )}
+  </div>
+
+  <div class="space-y-0">
+    {fields.map((field) => (
+      <div class="audit-row">
+        <span class="audit-label">{field.label}</span>
+        {field.isStatus ? (
+          <span class:list={[
+            'audit-value',
+            field.isPositive
+              ? 'text-emerald-700 dark:text-emerald-400'
+              : 'text-amber-600 dark:text-amber-400',
+          ]}>
+            {field.value}
+          </span>
+        ) : field.link ? (
+          <a href={field.link} {...(field.link.startsWith('/') ? {} : { target: '_blank', rel: 'noopener noreferrer' })} class="audit-value text-accent hover:underline">
+            {field.value}
+          </a>
+        ) : (
+          <span class="audit-value" title={field.value}>
+            {field.truncate ? truncateHash(field.value) : field.value}
+          </span>
+        )}
+      </div>
+    ))}
+  </div>
+
+  {provenance.provenance_signature && (
+    <div class="mt-6 pt-4 border-t border-border-light dark:border-border-dark">
+      <span class="audit-label">Provenance Signature</span>
+      <code class="block mt-2 p-3 bg-zinc-100 dark:bg-zinc-800 rounded text-xs break-all">
+        {provenance.provenance_signature}
+      </code>
+    </div>
+  )}
+
+  <div class="mt-6 pt-4 border-t border-border-light dark:border-border-dark">
+    <span class="audit-label">Sources ({provenance.sources.length})</span>
+    <ul class="mt-2 space-y-1">
+      {provenance.sources.map((source, index) => (
+        <li class="text-xs">
+          <span class="text-text-muted-light dark:text-text-muted-dark">[{index + 1}]</span>
+          <a
+            href={source}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="ml-2 text-accent hover:underline break-all"
+          >
+            {source}
+          </a>
+        </li>
+      ))}
+    </ul>
+  </div>
+</div>

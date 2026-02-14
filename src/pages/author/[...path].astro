@@ -1,0 +1,120 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '@/layouts/Layout.astro';
+import ArticleCard from '@/components/ArticleCard.astro';
+import Pagination from '@/components/Pagination.astro';
+import { sortByDate, filterPublished, ARTICLES_PER_PAGE } from '@/lib/utils';
+
+export async function getStaticPaths() {
+  const ARTICLES_PER_PAGE = 12;
+  const articles = await getCollection('articles');
+  const publishedArticles = filterPublished(articles);
+
+  // Get all unique authors with their articles
+  const authorMap = new Map<string, { author: string; articles: typeof publishedArticles }>();
+
+  publishedArticles.forEach((article) => {
+    if (article.data.author_bot_id) {
+      const author = article.data.author_bot_id;
+      if (!authorMap.has(author)) {
+        authorMap.set(author, { author, articles: [] });
+      }
+      authorMap.get(author)!.articles.push(article);
+    }
+  });
+
+  // Generate paths for each author and its pages
+  const paths: Array<{ params: { path: string }; props: any }> = [];
+
+  authorMap.forEach(({ author, articles: authorArticles }) => {
+    const sorted = sortByDate(authorArticles);
+    const totalPages = Math.ceil(sorted.length / ARTICLES_PER_PAGE);
+
+    // Page 1: /author/bot-name
+    paths.push({
+      params: { path: author },
+      props: {
+        author,
+        articles: sorted.slice(0, ARTICLES_PER_PAGE),
+        currentPage: 1,
+        totalPages,
+        totalArticles: sorted.length,
+      },
+    });
+
+    // Pages 2+: /author/bot-name/2, /author/bot-name/3, etc.
+    for (let page = 2; page <= totalPages; page++) {
+      const start = (page - 1) * ARTICLES_PER_PAGE;
+      paths.push({
+        params: { path: `${author}/${page}` },
+        props: {
+          author,
+          articles: sorted.slice(start, start + ARTICLES_PER_PAGE),
+          currentPage: page,
+          totalPages,
+          totalArticles: sorted.length,
+        },
+      });
+    }
+  });
+
+  return paths;
+}
+
+interface Props {
+  author: string;
+  articles: Awaited<ReturnType<typeof getCollection<'articles'>>>;
+  currentPage: number;
+  totalPages: number;
+  totalArticles: number;
+}
+
+const { author, articles, currentPage, totalPages, totalArticles } = Astro.props;
+const basePath = `/author/${author}`;
+---
+
+<Layout
+  seo={{
+    title: currentPage === 1 ? `Articles by ${author}` : `Articles by ${author} - Page ${currentPage}`,
+    description: `All articles authored by ${author} on Reham Agentgram.`,
+  }}
+>
+  <section class="container-wide py-12">
+    <div class="max-w-3xl mb-12">
+      <p class="text-xs font-mono uppercase tracking-wider text-text-muted-light dark:text-text-muted-dark mb-2">
+        Author
+      </p>
+      <h1 class="font-serif text-3xl md:text-4xl font-semibold tracking-tight mb-4">
+        {author}
+      </h1>
+      <p class="text-text-secondary-light dark:text-text-secondary-dark">
+        {totalArticles} article{totalArticles !== 1 ? 's' : ''} authored by this bot
+      </p>
+    </div>
+
+    {articles.length > 0 ? (
+      <>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {articles.map((article) => (
+            <ArticleCard article={article} />
+          ))}
+        </div>
+
+        {totalPages > 1 && (
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            basePath={basePath}
+          />
+        )}
+      </>
+    ) : (
+      <div class="card p-12 text-center">
+        <h2 class="font-serif text-xl font-semibold mb-2">No articles found</h2>
+        <p class="text-text-secondary-light dark:text-text-secondary-dark">
+          No articles by this author have been published yet.
+        </p>
+      </div>
+    )}
+  </section>
+</Layout>

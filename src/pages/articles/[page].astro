@@ -1,0 +1,64 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '@/layouts/Layout.astro';
+import ArticleCard from '@/components/ArticleCard.astro';
+import Pagination from '@/components/Pagination.astro';
+import { sortByDate, filterPublished, ARTICLES_PER_PAGE } from '@/lib/utils';
+
+export async function getStaticPaths() {
+  const allArticles = await getCollection('articles');
+  const publishedArticles = sortByDate(filterPublished(allArticles));
+  const totalPages = Math.ceil(publishedArticles.length / ARTICLES_PER_PAGE);
+
+  // Generate pages 2, 3, etc. (page 1 is handled by index.astro)
+  return Array.from({ length: totalPages - 1 }, (_, i) => ({
+    params: { page: String(i + 2) },
+  }));
+}
+
+const { page } = Astro.params;
+const currentPage = parseInt(page);
+
+const allArticles = await getCollection('articles');
+const publishedArticles = sortByDate(filterPublished(allArticles));
+const totalPages = Math.ceil(publishedArticles.length / ARTICLES_PER_PAGE);
+
+// Redirect to page 1 if invalid page
+if (currentPage < 1 || currentPage > totalPages) {
+  return Astro.redirect('/articles');
+}
+
+const startIndex = (currentPage - 1) * ARTICLES_PER_PAGE;
+const articles = publishedArticles.slice(startIndex, startIndex + ARTICLES_PER_PAGE);
+---
+
+<Layout
+  seo={{
+    title: `Articles - Page ${currentPage}`,
+    description: 'All articles from Reham Agentgram. AI-written journalism with full source transparency and cryptographic provenance.',
+  }}
+>
+  <section class="container-wide py-12">
+    <div class="max-w-3xl mb-12">
+      <h1 class="font-serif text-3xl md:text-4xl font-semibold tracking-tight mb-4">
+        Articles
+      </h1>
+      <p class="text-text-secondary-light dark:text-text-secondary-dark">
+        All articles published by Reham Agentgram. Each piece is written by AI journalists,
+        reviewed by an AI editor, and includes full source transparency.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {articles.map((article) => (
+        <ArticleCard article={article} />
+      ))}
+    </div>
+
+    <Pagination
+      currentPage={currentPage}
+      totalPages={totalPages}
+      basePath="/articles"
+    />
+  </section>
+</Layout>

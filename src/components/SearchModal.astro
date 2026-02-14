@@ -1,0 +1,259 @@
+<!-- Search Modal with Pagefind -->
+<div id="search-modal" class="search-modal" role="dialog" aria-modal="true" aria-label="Search articles" hidden>
+  <div class="search-overlay" data-search-close></div>
+  <div class="search-container">
+    <div class="search-header">
+      <span class="search-shortcut">ESC to close</span>
+      <button type="button" class="search-close-btn" data-search-close aria-label="Close search">
+        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+    </div>
+    <div id="pagefind-container"></div>
+  </div>
+</div>
+
+<style>
+  .search-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding-top: 10vh;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.15s ease, visibility 0.15s ease;
+  }
+
+  .search-modal[data-open] {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .search-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(4px);
+  }
+
+  .search-container {
+    position: relative;
+    width: 100%;
+    max-width: 640px;
+    max-height: 80vh;
+    margin: 0 1rem;
+    border-radius: 0.75rem;
+    border: 1px solid #E4E4E7;
+    background: #FAFAF9;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    overflow-y: auto;
+    transform: translateY(-8px);
+    transition: transform 0.15s ease;
+  }
+
+  .search-modal[data-open] .search-container {
+    transform: translateY(0);
+  }
+
+  :global(.dark) .search-container {
+    background: #18181B;
+    border-color: #27272A;
+  }
+
+  .search-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid #E4E4E7;
+  }
+
+  :global(.dark) .search-header {
+    border-color: #27272A;
+  }
+
+  .search-shortcut {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    color: #71717A;
+  }
+
+  .search-close-btn {
+    padding: 0.25rem;
+    border-radius: 0.375rem;
+    color: #71717A;
+    transition: color 0.15s ease;
+  }
+
+  .search-close-btn:hover {
+    color: #18181B;
+  }
+
+  :global(.dark) .search-close-btn:hover {
+    color: #FAFAFA;
+  }
+
+  #pagefind-container {
+    padding: 1rem;
+  }
+</style>
+
+<script>
+  // Shared across re-inits: AbortController for listener cleanup, CSS/pagefind load flags
+  let searchAbort: AbortController | null = null;
+  let pagefindCssLoaded = false;
+  let pagefindLoaded = false;
+
+  function initSearch() {
+    const el = document.getElementById('search-modal');
+    if (!el) return;
+    const modal = el as HTMLElement;
+
+    // BUG 1 fix: abort previous listeners before re-registering
+    searchAbort?.abort();
+    searchAbort = new AbortController();
+    const { signal } = searchAbort;
+
+    let closeTimer: ReturnType<typeof setTimeout> | null = null;
+    let triggerElement: HTMLElement | null = null;
+
+    function focusInput() {
+      const input = modal.querySelector('.pagefind-ui__search-input') as HTMLInputElement | null;
+      if (input) {
+        input.focus();
+        return true;
+      }
+      return false;
+    }
+
+    // BUG 2 fix: retry focus until Pagefind renders the input
+    function focusInputWithRetry(attempts = 10) {
+      if (focusInput()) return;
+      if (attempts > 0) {
+        requestAnimationFrame(() => focusInputWithRetry(attempts - 1));
+      }
+    }
+
+    function openSearch() {
+      // BUG 5 fix: cancel pending close timer
+      if (closeTimer) {
+        clearTimeout(closeTimer);
+        closeTimer = null;
+      }
+
+      // A11Y 2: remember trigger for focus restore
+      triggerElement = document.activeElement as HTMLElement | null;
+
+      modal.hidden = false;
+      void modal.offsetHeight;
+      modal.setAttribute('data-open', '');
+      document.body.style.overflow = 'hidden';
+
+      if (!pagefindLoaded) {
+        loadPagefind();
+      }
+
+      focusInputWithRetry();
+    }
+
+    function closeSearch() {
+      modal.removeAttribute('data-open');
+      document.body.style.overflow = '';
+      closeTimer = setTimeout(() => {
+        modal.hidden = true;
+        closeTimer = null;
+      }, 150);
+
+      // A11Y 2: restore focus to trigger element
+      triggerElement?.focus();
+      triggerElement = null;
+    }
+
+    // A11Y 1: trap focus inside modal
+    function handleFocusTrap(e: KeyboardEvent) {
+      if (e.key !== 'Tab' || modal.hidden) return;
+
+      const focusable = modal.querySelectorAll<HTMLElement>(
+        'input, button, [tabindex]:not([tabindex="-1"]), a[href]'
+      );
+      if (focusable.length === 0) return;
+
+      const first = focusable[0]!;
+      const last = focusable[focusable.length - 1]!;
+
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    }
+
+    async function loadPagefind() {
+      try {
+        // BUG 4 fix: only inject CSS once
+        if (!pagefindCssLoaded) {
+          const link = document.createElement('link');
+          link.rel = 'stylesheet';
+          link.href = '/pagefind/pagefind-ui.css';
+          document.head.appendChild(link);
+          pagefindCssLoaded = true;
+        }
+
+        // Use Function constructor to prevent Vite from resolving at build time
+        const importPagefind = new Function('return import("/pagefind/pagefind-ui.js")');
+        await importPagefind();
+        new (window as any).PagefindUI({
+          element: '#pagefind-container',
+          showSubResults: true,
+          showImages: false,
+          resetStyles: false,
+        });
+        pagefindLoaded = true;
+
+        focusInputWithRetry();
+      } catch {
+        const container = document.getElementById('pagefind-container');
+        if (container) {
+          container.innerHTML = '<p style="text-align:center;padding:2rem;color:#71717A;font-size:0.875rem;">Search is available after building the site.<br><code style="font-size:0.75rem;">npm run build && npm run preview</code></p>';
+        }
+      }
+    }
+
+    // Open triggers
+    document.querySelectorAll('[data-search-open]').forEach(btn => {
+      btn.addEventListener('click', openSearch, { signal });
+    });
+
+    // Close triggers
+    modal.querySelectorAll('[data-search-close]').forEach(btn => {
+      btn.addEventListener('click', closeSearch, { signal });
+    });
+
+    // Keyboard: Cmd+K toggle, Escape close, focus trap
+    document.addEventListener('keydown', (e) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+        e.preventDefault();
+        modal.hidden ? openSearch() : closeSearch();
+        return;
+      }
+      if (e.key === 'Escape' && !modal.hidden) {
+        e.preventDefault();
+        closeSearch();
+        return;
+      }
+      handleFocusTrap(e);
+    }, { signal });
+  }
+
+  initSearch();
+  document.addEventListener('astro:after-swap', () => {
+    pagefindLoaded = false;
+    initSearch();
+  });
+</script>

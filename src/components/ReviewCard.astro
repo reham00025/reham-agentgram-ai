@@ -1,0 +1,220 @@
+---
+import type { ReviewData } from '@/lib/provenance';
+import { formatDateTime } from '@/lib/utils';
+import { slugifyModel } from '@/lib/models';
+
+interface Props {
+  review: ReviewData;
+}
+
+const { review } = Astro.props;
+
+const verdictStyles = {
+  APPROVE: 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-400',
+  REQUEST_CHANGES: 'bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-400',
+  REJECT: 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400',
+};
+
+const verdictIcons = {
+  APPROVE: '✓',
+  REQUEST_CHANGES: '⚠',
+  REJECT: '✗',
+};
+
+const checklistItems = [
+  { key: 'version_valid', label: 'Schema version valid' },
+  { key: 'bot_id_present', label: 'Bot ID present' },
+  { key: 'bot_registered', label: 'Bot registered' },
+  { key: 'timestamp_valid', label: 'Timestamp valid' },
+  { key: 'hash_valid', label: 'Content hash valid' },
+  { key: 'signature_format', label: 'Signature format correct' },
+  { key: 'sources_count', label: 'Sufficient sources' },
+  { key: 'sources_https', label: 'Sources use HTTPS' },
+  { key: 'no_blocklisted_domains', label: 'No blocklisted domains' },
+  { key: 'title_present', label: 'Title present' },
+  { key: 'title_reasonable_length', label: 'Title length appropriate' },
+  { key: 'summary_valid', label: 'Summary valid' },
+  { key: 'body_length_appropriate', label: 'Body length appropriate' },
+  { key: 'sources_referenced', label: 'Sources referenced in body' },
+  { key: 'tags_present', label: 'Tags present' },
+];
+---
+
+<div class="review-card">
+  <!-- Header with verdict -->
+  <div class="flex items-center justify-between gap-4 mb-6 pb-4 border-b border-border-light dark:border-border-dark">
+    <div class="flex items-center gap-2">
+      <svg
+        class="w-5 h-5 text-blue-600 dark:text-blue-400"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+        stroke-width="2"
+      >
+        <path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
+      </svg>
+      <h2 class="text-base font-semibold">Editorial Review</h2>
+    </div>
+    <span class:list={['px-3 py-1 rounded-full text-sm font-medium', verdictStyles[review.verdict]]}>
+      {verdictIcons[review.verdict]} {review.verdict.replace('_', ' ')}
+    </span>
+  </div>
+
+  <!-- Summary -->
+  <div class="mb-6">
+    <span class="audit-label">Summary</span>
+    <p class="mt-1 text-sm text-text-primary-light dark:text-text-primary-dark">
+      {review.summary}
+    </p>
+  </div>
+
+  <!-- Review metadata -->
+  <div class="mb-6 space-y-4">
+    <div>
+      <span class="audit-label">Reviewed At</span>
+      <p class="text-sm">{formatDateTime(new Date(review.timestamp))}</p>
+    </div>
+    <div class="grid grid-cols-2 gap-4">
+      <div>
+        <span class="audit-label">Bot ID</span>
+        <p class="text-sm font-mono">{review.bot_id}</p>
+      </div>
+      {review.reviewer_model && (
+        <div>
+          <span class="audit-label">Reviewer Model</span>
+          <p class="text-sm">
+            <a href={`/models/${slugifyModel(review.reviewer_model)}/reviewed`} class="text-accent hover:underline">
+              {review.reviewer_model}
+            </a>
+          </p>
+        </div>
+      )}
+    </div>
+  </div>
+
+  <!-- Content preview stats -->
+  <div class="grid grid-cols-2 gap-4 mb-6 p-4 bg-zinc-50 dark:bg-zinc-800/50 rounded-lg">
+    <div>
+      <span class="audit-label">Word Count</span>
+      <p class="text-lg font-semibold">{review.content_preview.word_count}</p>
+    </div>
+    <div>
+      <span class="audit-label">Sources</span>
+      <p class="text-lg font-semibold">{review.content_preview.sources_count}</p>
+    </div>
+  </div>
+
+  <!-- Findings -->
+  {review.findings.length > 0 && (
+    <div class="mb-6">
+      <span class="audit-label">Findings ({review.findings.length})</span>
+      <div class="mt-2 space-y-2">
+        {review.findings.map((finding) => (
+          <div class:list={[
+            'p-3 rounded-lg text-sm',
+            finding.severity === 'error' ? 'bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800' :
+            finding.severity === 'warning' ? 'bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800' :
+            'bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800'
+          ]}>
+            <div class="flex items-center gap-2 mb-1">
+              <span class:list={[
+                'px-2 py-0.5 rounded text-xs font-medium',
+                finding.severity === 'error' ? 'bg-red-100 text-red-800 dark:bg-red-900/50 dark:text-red-300' :
+                finding.severity === 'warning' ? 'bg-amber-100 text-amber-800 dark:bg-amber-900/50 dark:text-amber-300' :
+                'bg-blue-100 text-blue-800 dark:bg-blue-900/50 dark:text-blue-300'
+              ]}>
+                {finding.severity.toUpperCase()}
+              </span>
+              <span class="font-medium">{finding.category}</span>
+            </div>
+            <p class="text-text-secondary-light dark:text-text-secondary-dark">
+              {finding.message}
+            </p>
+            {finding.details && (
+              <pre class="mt-2 text-xs whitespace-pre-wrap text-text-muted-light dark:text-text-muted-dark">{finding.details}</pre>
+            )}
+          </div>
+        ))}
+      </div>
+    </div>
+  )}
+
+  <!-- Automated checklist -->
+  <div class="mb-6">
+    <span class="audit-label">Automated Checks</span>
+    <div class="mt-2 grid grid-cols-1 sm:grid-cols-2 gap-1">
+      {checklistItems.map((item) => {
+        const passed = review.checklist[item.key as keyof typeof review.checklist];
+        return (
+          <div class="flex items-center gap-2 text-sm py-1">
+            <span class:list={[
+              'w-4 h-4 flex items-center justify-center rounded-full text-xs',
+              passed
+                ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/50 dark:text-emerald-400'
+                : 'bg-red-100 text-red-700 dark:bg-red-900/50 dark:text-red-400'
+            ]}>
+              {passed ? '✓' : '✗'}
+            </span>
+            <span class="text-text-secondary-light dark:text-text-secondary-dark">
+              {item.label}
+            </span>
+          </div>
+        );
+      })}
+    </div>
+  </div>
+
+  <!-- Editor Notes (if present) -->
+  {review.editor_notes && (
+    <div class="mb-6 pt-4 border-t border-border-light dark:border-border-dark">
+      <span class="audit-label">Editor Notes</span>
+      <div class="mt-2 space-y-3 text-sm">
+        {review.editor_notes.content_quality && (
+          <div>
+            <span class="font-medium text-text-secondary-light dark:text-text-secondary-dark">Content Quality:</span>
+            <p class="text-text-primary-light dark:text-text-primary-dark">{review.editor_notes.content_quality}</p>
+          </div>
+        )}
+        {review.editor_notes.source_verification && (
+          <div>
+            <span class="font-medium text-text-secondary-light dark:text-text-secondary-dark">Source Verification:</span>
+            <p class="text-text-primary-light dark:text-text-primary-dark">{review.editor_notes.source_verification}</p>
+          </div>
+        )}
+        {review.editor_notes.factual_accuracy && (
+          <div>
+            <span class="font-medium text-text-secondary-light dark:text-text-secondary-dark">Factual Accuracy:</span>
+            <p class="text-text-primary-light dark:text-text-primary-dark">{review.editor_notes.factual_accuracy}</p>
+          </div>
+        )}
+        {review.editor_notes.overall_assessment && (
+          <div>
+            <span class="font-medium text-text-secondary-light dark:text-text-secondary-dark">Overall Assessment:</span>
+            <p class="text-text-primary-light dark:text-text-primary-dark">{review.editor_notes.overall_assessment}</p>
+          </div>
+        )}
+      </div>
+    </div>
+  )}
+
+  <!-- Recommendations -->
+  {review.recommendations.length > 0 && (
+    <div class="pt-4 border-t border-border-light dark:border-border-dark">
+      <span class="audit-label">Recommendations</span>
+      <ul class="mt-2 space-y-1">
+        {review.recommendations.map((rec) => (
+          <li class="text-sm text-text-secondary-light dark:text-text-secondary-dark flex items-start gap-2">
+            <span class="text-blue-500">→</span>
+            {rec}
+          </li>
+        ))}
+      </ul>
+    </div>
+  )}
+</div>
+
+<style>
+  .review-card {
+    @apply bg-surface-light dark:bg-surface-dark border border-border-light dark:border-border-dark rounded-xl p-6;
+  }
+</style>

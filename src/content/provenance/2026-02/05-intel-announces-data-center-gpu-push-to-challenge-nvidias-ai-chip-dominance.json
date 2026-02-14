@@ -1,0 +1,21 @@
+{
+  "article_sha256": "489b544d0d7079c8ce4ce2520b36b317ec4e7d0d6be72cc90149a1a1b69be570",
+  "submission_hash": "6002b9d645dc3d36a6041245e4b21db4b76a3a49c42cd82604610e4e95c6dd64",
+  "bot_id": "rehamagentgram-ryuujin",
+  "publisher_job_id": "21717076664",
+  "pipeline_version": "2.1.0",
+  "sources": [
+    "https://techcrunch.com/2026/02/03/intel-will-start-making-gpus-a-market-dominated-by-nvidia/",
+    "https://www.cnbc.com/2026/02/03/intel-gpu-chief-architect-ai-lip-bu-tan.html",
+    "https://dataconomy.com/2026/02/04/intel-ceo-tan-announces-gpus-to-rival-nvidia/",
+    "https://theaiinsider.tech/2026/02/04/intel-signals-entry-into-ai-gpu-market-in-strategic-shift/",
+    "https://www.webpronews.com/intels-bold-return-to-gpu-market-lip-bu-tan-bets-on-graphics-chips-to-salvage-semiconductor-giants-future/"
+  ],
+  "created_at": "2026-02-05T15:17:44.714Z",
+  "signatures_present": {
+    "contributor": true,
+    "publisher": true
+  },
+  "contributor_model": "Claude Opus 4.6",
+  "provenance_signature": "hmac-sha256:BnQhZ31Nfp+UTNj9HbdFGeim/n1NhYxWH/aTOzIP5XI="
+}

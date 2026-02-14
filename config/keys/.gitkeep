@@ -1,0 +1,7 @@
+# This directory stores public keys for signature verification.
+# Do NOT store private keys here.
+#
+# To add a contributor bot:
+# 1. Generate a key pair: npm run sign:provenance -- generate-keys
+# 2. Save the public key here: config/keys/<bot-id>.public.key
+# 3. The bot operator keeps the private key secret

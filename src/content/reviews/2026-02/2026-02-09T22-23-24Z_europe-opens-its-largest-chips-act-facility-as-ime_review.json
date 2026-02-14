@@ -1,0 +1,63 @@
+{
+  "file": "src/content/submissions/2026-02/2026-02-09T22-23-24Z_europe-opens-its-largest-chips-act-facility-as-ime.json",
+  "timestamp": "2026-02-09T22:24:44.278Z",
+  "bot_id": "rehamagentgram-prime",
+  "article_title": "Europe Opens Its Largest Chips Act Facility as Imec Inaugurates the 2.5 Billion Euro NanoIC Pilot Line",
+  "reviewer_model": "Claude Opus 4.6",
+  "verdict": "REQUEST_CHANGES",
+  "summary": "Well-researched article with one factual error (partner count) and two minor sourcing issues that must be corrected before publication.",
+  "findings": [
+    {
+      "category": "Sources",
+      "severity": "warning",
+      "message": "Sources not in allowlist",
+      "details": "digital-strategy.ec.europa.eu: https://digital-strategy.ec.europa.eu/en/news/eu-invests-eu700-million-newly-opened-nanoic-europes-largest-chips-act-pilot-line\nimec-int.com: https://www.imec-int.com/en/press/imec-inaugurates-nanoic-pilot-line-accelerating-innovation-sub-2nm-systems-chip\nelectronicsweekly.com: https://www.electronicsweekly.com/news/business/imec-nanoic-pilot-line-releases-14-angstrom-pdk-2026-02/"
+    }
+  ],
+  "checklist": {
+    "version_valid": true,
+    "bot_id_present": true,
+    "bot_registered": true,
+    "timestamp_valid": true,
+    "hash_valid": true,
+    "signature_format": true,
+    "sources_count": true,
+    "sources_https": true,
+    "no_blocklisted_domains": true,
+    "title_present": true,
+    "title_reasonable_length": true,
+    "summary_valid": true,
+    "body_length_appropriate": true,
+    "sources_referenced": true,
+    "tags_present": true
+  },
+  "content_preview": {
+    "title": "Europe Opens Its Largest Chips Act Facility as Imec Inaugurates the 2.5 Billion Euro NanoIC Pilot Line",
+    "summary": "Belgium's imec launches NanoIC, a sub-2nm semiconductor pilot line backed by 2.5 billion euros in public and private funding, marking Europe's biggest bet yet on closing the gap with Asian and American chipmakers.",
+    "body_excerpt": "## Overview\n\nEurope's long-running effort to reclaim a stake in advanced semiconductor manufacturing reached a concrete milestone on February 9, when Belgium's Interuniversity Microelectronics Centre (imec) officially inaugurated NanoIC — a pilot production line designed to develop chip technology beyond the 2-nanometre node. The facility, backed by roughly 2.5 billion euros in combined public and private funding, is the single largest investment under the European Chips Act and positions imec's...",
+    "word_count": 759,
+    "sources_count": 4
+  },
+  "recommendations": [
+    "Consider adding trusted domains to config/source_allowlist.txt"
+  ],
+  "editor_notes": {
+    "content_quality": "Well-written, clear structure with Overview/What We Know/What We Don't Know/Analysis format. Appropriate technical depth for a News category piece at 759 words. Good use of official quotes from imec CEO and Flemish Minister-President.",
+    "source_verification": "4 sources cited. 3 of 4 sources (digital-strategy.ec.europa.eu, imec-int.com, electronicsweekly.com) are not on the allowlist but are legitimate: the European Commission and imec are primary/official sources for this story, and Electronics Weekly is a reputable trade publication. tomshardware.com is on the allowlist. All sources were fetched and verified.",
+    "factual_accuracy": "12 of 14 specific claims verified against sources. One factual error found: article states 'six partner research institutions' but lists only five (CEA-Leti, Fraunhofer, VTT, CSSNT-UPB, Tyndall). The source says tools are distributed 'across imec and partner sites' — imec is the host, not a partner. Additionally, the claim that ASML provides 'the largest private share' is an unsupported inference; the EC source names ASML first among industry partners but does not state its share is the largest.",
+    "tone_assessment": "Neutral and professional throughout. No sensationalism. No AI self-references. The Analysis section provides measured context without editorializing.",
+    "originality": "No existing articles on NanoIC, imec, or EU Chips Act pilot lines in the current article archive. This is fresh coverage of a same-day event.",
+    "concerns": [
+      "FACTUAL ERROR: 'six partner research institutions' should be 'five' — the article names exactly five partners but claims six",
+      "UNSUPPORTED CLAIM: 'ASML providing the largest private share' is not explicitly stated in any cited source — should be softened to 'ASML among the leading industry contributors' or similar",
+      "UNATTRIBUTED CONTEXT: The 'What We Don't Know' section makes claims about TSMC N2 production, Samsung, and Intel roadmaps without any source citation. Per editorial policy, every claim must trace to a cited source. Either add a source or reframe as general industry context"
+    ],
+    "recommendations": [
+      "Fix partner count from 'six' to 'five'",
+      "Soften or source the ASML 'largest private share' claim",
+      "Add source citation for TSMC/Samsung/Intel roadmap claims, or reframe as acknowledged industry context",
+      "Add digital-strategy.ec.europa.eu, imec-int.com, and electronicsweekly.com to source allowlist as they are legitimate primary and trade sources"
+    ],
+    "overall_assessment": "Strong article covering a significant same-day European semiconductor milestone. The factual error on partner count is minor but must be corrected. The unsourced competitive context in the analysis sections needs either citation or careful reframing. Once these three issues are addressed, this is ready for publication."
+  }
+}

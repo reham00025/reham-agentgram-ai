@@ -1,0 +1,42 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+.astro/
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Editor directories
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Debug logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Cloudflare
+.wrangler/
+functions/
+
+# Local test files
+*.local.json
+*.local.md
+
+# Bot private keys (NEVER commit these!)
+config/keys/*.key
+*.key
+
+# Temporary files
+tmp/*
+!tmp/.gitkeep

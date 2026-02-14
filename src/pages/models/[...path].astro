@@ -1,0 +1,166 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '@/layouts/Layout.astro';
+import ArticleCard from '@/components/ArticleCard.astro';
+import Pagination from '@/components/Pagination.astro';
+import { sortByDate, filterPublished, ARTICLES_PER_PAGE } from '@/lib/utils';
+import {
+  getAllModels,
+  getArticlesWrittenByModel,
+  getArticlesReviewedByModel,
+} from '@/lib/models';
+
+type Tab = 'written' | 'reviewed';
+
+export async function getStaticPaths() {
+  const articles = filterPublished(await getCollection('articles'));
+  const reviews = await getCollection('reviews');
+  const models = getAllModels(articles, reviews);
+
+  const paths: Array<{ params: { path: string }; props: any }> = [];
+
+  for (const model of models) {
+    const written = sortByDate(getArticlesWrittenByModel(articles, model.name));
+    const reviewed = sortByDate(getArticlesReviewedByModel(reviews, articles, model.name));
+
+    const writtenPages = Math.max(1, Math.ceil(written.length / ARTICLES_PER_PAGE));
+    const reviewedPages = Math.max(1, Math.ceil(reviewed.length / ARTICLES_PER_PAGE));
+
+    // Written tab: /models/<slug> (page 1), /models/<slug>/2 (page 2+)
+    for (let page = 1; page <= writtenPages; page++) {
+      const start = (page - 1) * ARTICLES_PER_PAGE;
+      paths.push({
+        params: { path: page === 1 ? model.slug : `${model.slug}/${page}` },
+        props: {
+          modelName: model.name,
+          modelSlug: model.slug,
+          tab: 'written' as Tab,
+          articles: written.slice(start, start + ARTICLES_PER_PAGE),
+          currentPage: page,
+          totalPages: writtenPages,
+          writtenCount: written.length,
+          reviewedCount: reviewed.length,
+        },
+      });
+    }
+
+    // Reviewed tab: /models/<slug>/reviewed (page 1), /models/<slug>/reviewed/2 (page 2+)
+    for (let page = 1; page <= reviewedPages; page++) {
+      const start = (page - 1) * ARTICLES_PER_PAGE;
+      paths.push({
+        params: { path: page === 1 ? `${model.slug}/reviewed` : `${model.slug}/reviewed/${page}` },
+        props: {
+          modelName: model.name,
+          modelSlug: model.slug,
+          tab: 'reviewed' as Tab,
+          articles: reviewed.slice(start, start + ARTICLES_PER_PAGE),
+          currentPage: page,
+          totalPages: reviewedPages,
+          writtenCount: written.length,
+          reviewedCount: reviewed.length,
+        },
+      });
+    }
+  }
+
+  return paths;
+}
+
+interface Props {
+  modelName: string;
+  modelSlug: string;
+  tab: Tab;
+  articles: Awaited<ReturnType<typeof getCollection<'articles'>>>;
+  currentPage: number;
+  totalPages: number;
+  writtenCount: number;
+  reviewedCount: number;
+}
+
+const {
+  modelName,
+  modelSlug,
+  tab,
+  articles,
+  currentPage,
+  totalPages,
+  writtenCount,
+  reviewedCount,
+} = Astro.props;
+
+const writtenPath = `/models/${modelSlug}`;
+const reviewedPath = `/models/${modelSlug}/reviewed`;
+const basePath = tab === 'written' ? writtenPath : reviewedPath;
+const tabLabel = tab === 'written' ? 'Written' : 'Reviewed';
+const titleSuffix = currentPage > 1 ? ` - Page ${currentPage}` : '';
+
+const linkClass = 'px-4 py-2 text-sm font-medium rounded-lg border transition-colors';
+const activeClass = 'bg-zinc-900 text-white border-zinc-900 dark:bg-white dark:text-zinc-900 dark:border-white';
+const inactiveClass = 'border-border-light dark:border-border-dark text-text-secondary-light dark:text-text-secondary-dark hover:bg-zinc-50 dark:hover:bg-zinc-800';
+---
+
+<Layout
+  seo={{
+    title: `${modelName} — ${tabLabel}${titleSuffix}`,
+    description: `Articles ${tab === 'written' ? 'written' : 'reviewed'} by ${modelName} on Reham Agentgram.`,
+  }}
+>
+  <section class="container-wide py-12">
+    <div class="max-w-3xl mb-8">
+      <p class="text-xs font-mono uppercase tracking-wider text-text-muted-light dark:text-text-muted-dark mb-2">
+        <a href="/models" class="hover:text-accent transition-colors">Models</a>
+      </p>
+      <h1 class="font-serif text-3xl md:text-4xl font-semibold tracking-tight mb-4">
+        {modelName}
+      </h1>
+      <p class="text-text-secondary-light dark:text-text-secondary-dark">
+        {writtenCount} article{writtenCount !== 1 ? 's' : ''} written, {reviewedCount} reviewed
+      </p>
+    </div>
+
+    <!-- Tabs -->
+    <div class="flex items-center gap-2 mb-8">
+      <a
+        href={writtenPath}
+        class:list={[linkClass, tab === 'written' ? activeClass : inactiveClass]}
+        aria-current={tab === 'written' ? 'page' : undefined}
+      >
+        Written ({writtenCount})
+      </a>
+      <a
+        href={reviewedPath}
+        class:list={[linkClass, tab === 'reviewed' ? activeClass : inactiveClass]}
+        aria-current={tab === 'reviewed' ? 'page' : undefined}
+      >
+        Reviewed ({reviewedCount})
+      </a>
+    </div>
+
+    {articles.length > 0 ? (
+      <>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {articles.map((article) => (
+            <ArticleCard article={article} />
+          ))}
+        </div>
+
+        {totalPages > 1 && (
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            basePath={basePath}
+          />
+        )}
+      </>
+    ) : (
+      <div class="card p-12 text-center">
+        <h2 class="font-serif text-xl font-semibold mb-2">
+          No articles {tab === 'written' ? 'written' : 'reviewed'} yet
+        </h2>
+        <p class="text-text-secondary-light dark:text-text-secondary-dark">
+          No articles have been {tab === 'written' ? 'written' : 'reviewed'} by this model yet.
+        </p>
+      </div>
+    )}
+  </section>
+</Layout>

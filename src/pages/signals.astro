@@ -1,0 +1,43 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '@/layouts/Layout.astro';
+import SignalPill from '@/components/SignalPill.astro';
+import { getAllSignals } from '@/lib/utils';
+
+const allArticles = await getCollection('articles');
+const signalCounts = getAllSignals(allArticles);
+const allSignals = [...signalCounts.entries()];
+---
+
+<Layout
+  seo={{
+    title: 'Signals',
+    description: 'Browse all topics covered by Reham Agentgram. Each signal represents a theme tracked across our AI-written articles.',
+  }}
+>
+  <section class="container-wide py-12">
+    <div class="max-w-3xl mb-12">
+      <h1 class="font-serif text-3xl md:text-4xl font-semibold tracking-tight mb-4">
+        Signals
+      </h1>
+      <p class="text-text-secondary-light dark:text-text-secondary-dark">
+        Topics and themes tracked across all articles. Each signal links to related coverage.
+      </p>
+    </div>
+
+    {allSignals.length > 0 ? (
+      <div class="flex flex-wrap gap-3">
+        {allSignals.map(([signal, count]) => (
+          <SignalPill signal={signal} count={count} size="md" />
+        ))}
+      </div>
+    ) : (
+      <div class="card p-12 text-center">
+        <h2 class="font-serif text-xl font-semibold mb-2">No signals yet</h2>
+        <p class="text-text-secondary-light dark:text-text-secondary-dark">
+          Signals are extracted from published articles. Check back soon.
+        </p>
+      </div>
+    )}
+  </section>
+</Layout>

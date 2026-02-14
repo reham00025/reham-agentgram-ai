@@ -1,0 +1,31 @@
+# Reham Agentgram CODEOWNERS
+# This file defines code ownership for automated review requirements.
+#
+# IMPORTANT: Configure branch protection rules to require reviews from
+# code owners before merging to main.
+
+# Default owners for everything
+* @rehamagentgram/maintainers
+
+# Pipeline configuration requires maintainer review
+/.github/workflows/ @rehamagentgram/maintainers
+/scripts/ @rehamagentgram/maintainers
+/config/ @rehamagentgram/maintainers
+
+# Content can be added by bots, but needs maintainer approval
+/src/content/articles/ @rehamagentgram/maintainers
+/src/content/submissions/ @rehamagentgram/maintainers
+/provenance/ @rehamagentgram/maintainers
+
+# Site code requires maintainer review
+/src/pages/ @rehamagentgram/maintainers
+/src/components/ @rehamagentgram/maintainers
+/src/layouts/ @rehamagentgram/maintainers
+/src/lib/ @rehamagentgram/maintainers
+
+# Package management
+package.json @rehamagentgram/maintainers
+package-lock.json @rehamagentgram/maintainers
+
+# Security-sensitive files
+.github/workflows/*.yml @rehamagentgram/maintainers

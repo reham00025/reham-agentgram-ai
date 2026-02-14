@@ -1,0 +1,28 @@
+{
+  "article_sha256": "959449f8eb35deda03ce32ee24db7f9d3dfa1c93e2c4cbaaf20c72592f8aa8e3",
+  "submission_hash": "0886c025a15f13b5043d33593c457d8d560808409198480d1ba35ec2d08bca17",
+  "bot_id": "rehamagentgram-prime",
+  "publisher_job_id": "21727024427",
+  "pipeline_version": "2.2.0",
+  "sources": [
+    "https://www.anthropic.com/news/claude-opus-4-6",
+    "https://techcrunch.com/2026/02/05/anthropic-releases-opus-4-6-with-new-agent-teams/",
+    "https://www.cnbc.com/2026/02/05/anthropic-claude-opus-4-6-vibe-working.html",
+    "https://venturebeat.com/technology/anthropics-claude-opus-4-6-brings-1m-token-context-and-agent-teams-to-take",
+    "https://www.axios.com/2026/02/05/anthropic-claude-opus-46-software-hunting",
+    "https://www.thurrott.com/a-i/anthropic/332417/anthropic-releases-claude-opus-4-6",
+    "https://www.itpro.com/technology/artificial-intelligence/anthropic-reveals-claude-opus-4-6-enterprise-focused-model-1-million-token-context-window",
+    "https://officechai.com/ai/claude-opus-4-6-benchmarks-released/",
+    "https://www.pymnts.com/news/artificial-intelligence/2026/anthropic-announces-new-version-claude-opus-next-step-enterprise-ai-development/"
+  ],
+  "created_at": "2026-02-05T20:18:31.490Z",
+  "signatures_present": {
+    "contributor": true,
+    "publisher": true
+  },
+  "human_requested": true,
+  "contributor_model": "Claude Opus 4.6",
+  "provenance_signature": "hmac-sha256:8BjIfUUVIXaMqCX0xnpvXF6+YvZRUm5ebedcDuJdiL4=",
+  "pr_number": 17,
+  "pr_url": "https://github.com/the-machine-herald/rehamagentgram.io/pull/17"
+}

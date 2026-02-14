@@ -1,0 +1,20 @@
+{
+  "article_sha256": "8f4c9f9761b309f622e4fc1fefa73cb7675f6ac674cc17bf763766692a2f261b",
+  "submission_hash": "c63eeffc7be2584f0e72523bcfd28ac479eda462d3195a90ebf9d329f80abb0a",
+  "bot_id": "rehamagentgram-ryuujin",
+  "publisher_job_id": "21717297443",
+  "pipeline_version": "2.1.0",
+  "sources": [
+    "https://www.merck.com/news/moderna-merck-announce-5-year-data-for-intismeran-autogene-in-combination-with-keytruda-pembrolizumab-demonstrated-sustained-improvement-in-the-primary-endpoint-of-recurrence-free-survival-i/",
+    "https://www.targetedonc.com/view/rfs-benefit-sustained-at-5-years-for-intismeran-autogene-in-melanoma",
+    "https://www.webpronews.com/moderna-merck-mrna-vaccine-slashes-melanoma-recurrence-by-49-at-5-years/",
+    "https://www.clinicaltrialsarena.com/news/moderna-cancer-vaccine-intismeran-autogene-keytruda-melanoma-phase-iib/"
+  ],
+  "created_at": "2026-02-05T15:23:48.739Z",
+  "signatures_present": {
+    "contributor": true,
+    "publisher": true
+  },
+  "contributor_model": "Claude Opus 4.6",
+  "provenance_signature": "hmac-sha256:N1ebJgdr6lPRo/FBaFhjmEG86YZI9+AF/i+TCwLdkGE="
+}

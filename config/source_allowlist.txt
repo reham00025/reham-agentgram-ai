@@ -1,0 +1,842 @@
+# Reham Agentgram - Source Allowlist
+# Sources must be from domains listed here to pass validation.
+# One domain per line. Lines starting with # are comments.
+# Domains should not include www. prefix (www. is stripped during validation).
+
+# ============================================
+# MAJOR NEWS ORGANIZATIONS
+# ============================================
+reuters.com
+apnews.com
+bbc.com
+bbc.co.uk
+theguardian.com
+nytimes.com
+washingtonpost.com
+wsj.com
+ft.com
+economist.com
+bloomberg.com
+cnbc.com
+cnn.com
+npr.org
+pbs.org
+abcnews.go.com
+cbsnews.com
+nbcnews.com
+usatoday.com
+latimes.com
+chicagotribune.com
+bostonglobe.com
+sfchronicle.com
+politico.com
+thehill.com
+axios.com
+vox.com
+slate.com
+theatlantic.com
+newyorker.com
+time.com
+newsweek.com
+forbes.com
+fortune.com
+foxbusiness.com
+businessinsider.com
+qz.com
+fastcompany.com
+inc.com
+
+# ============================================
+# WIRE SERVICES
+# ============================================
+afp.com
+efe.com
+dpa.de
+kyodonews.net
+xinhuanet.com
+tass.com
+prnewswire.com
+businesswire.com
+globenewswire.com
+
+# ============================================
+# INTERNATIONAL NEWS
+# ============================================
+aljazeera.com
+dw.com
+france24.com
+euronews.com
+rt.com
+scmp.com
+japantimes.co.jp
+straitstimes.com
+thehindu.com
+hindustantimes.com
+timesofindia.indiatimes.com
+abc.net.au
+smh.com.au
+cbc.ca
+globalnews.ca
+irishtimes.com
+independent.co.uk
+telegraph.co.uk
+dailymail.co.uk
+mirror.co.uk
+spiegel.de
+lemonde.fr
+elpais.com
+corriere.it
+repubblica.it
+
+# ============================================
+# TECHNOLOGY NEWS
+# ============================================
+arstechnica.com
+techcrunch.com
+theverge.com
+wired.com
+engadget.com
+zdnet.com
+cnet.com
+venturebeat.com
+thenextweb.com
+gizmodo.com
+mashable.com
+techradar.com
+tomsguide.com
+tomshardware.com
+anandtech.com
+extremetech.com
+digitaltrends.com
+slashdot.org
+hackernews.com
+techdirt.com
+theregister.com
+protocol.com
+semafor.com
+restofworld.org
+404media.co
+the-decoder.com
+rdworldonline.com
+9to5mac.com
+9to5google.com
+
+# ============================================
+# CLOUD NATIVE & DEVOPS
+# ============================================
+kubernetes.io
+cncf.io
+infoq.com
+
+# ============================================
+# AI & MACHINE LEARNING
+# ============================================
+openai.com
+anthropic.com
+deepmind.com
+huggingface.co
+towardsdatascience.com
+machinelearningmastery.com
+distill.pub
+ai.googleblog.com
+research.google
+ai.meta.com
+ai.facebook.com
+
+# ============================================
+# SCIENCE & RESEARCH PUBLICATIONS
+# ============================================
+nature.com
+science.org
+sciencemag.org
+sciencedirect.com
+cell.com
+thelancet.com
+nejm.org
+bmj.com
+pnas.org
+plos.org
+frontiersin.org
+mdpi.com
+springer.com
+wiley.com
+tandfonline.com
+iopscience.iop.org
+aps.org
+aip.org
+rsc.org
+acs.org
+
+# ============================================
+# SCIENCE NEWS & MAGAZINES
+# ============================================
+sciencenews.org
+scientificamerican.com
+newscientist.com
+livescience.com
+sciencedaily.com
+scitechdaily.com
+phys.org
+eurekalert.org
+theconversation.com
+undark.org
+quantamagazine.org
+nautil.us
+aeon.co
+symmetrymagazine.org
+
+# ============================================
+# PREPRINT & OPEN ACCESS
+# ============================================
+arxiv.org
+biorxiv.org
+medrxiv.org
+ssrn.com
+chemrxiv.org
+eartharxiv.org
+psyarxiv.com
+osf.io
+zenodo.org
+figshare.com
+
+# ============================================
+# MEDICAL & HEALTH
+# ============================================
+pubmed.ncbi.nlm.nih.gov
+ncbi.nlm.nih.gov
+nih.gov
+cdc.gov
+fda.gov
+mayoclinic.org
+webmd.com
+healthline.com
+medscape.com
+statnews.com
+fiercebiotech.com
+fiercepharma.com
+biopharmadive.com
+drugdiscoverynews.com
+
+# ============================================
+# SPACE & AEROSPACE
+# ============================================
+nasa.gov
+esa.int
+spacex.com
+blueorigin.com
+rocketlabusa.com
+space.com
+spacenews.com
+nasaspaceflight.com
+spaceflightnow.com
+arstechnica.com/space
+planetary.org
+skyandtelescope.org
+universetoday.com
+astronomy.com
+
+# ============================================
+# ENERGY & ENVIRONMENT
+# ============================================
+energy.gov
+epa.gov
+iea.org
+irena.org
+carbonbrief.org
+climatecentral.org
+insideclimatenews.org
+e360.yale.edu
+greentechmedia.com
+electrek.co
+cleantechnica.com
+utilitydive.com
+energycentral.com
+renewableenergyworld.com
+
+# ============================================
+# QUANTUM COMPUTING
+# ============================================
+quantumai.google
+research.ibm.com
+ionq.com
+dwavesys.com
+rigetti.com
+quantinuum.com
+pasqal.com
+xanadu.ai
+thequantuminsider.com
+quantumcomputingreport.com
+
+# ============================================
+# SEMICONDUCTORS & HARDWARE
+# ============================================
+nvidia.com
+nvidianews.nvidia.com
+blogs.nvidia.com
+intel.com
+newsroom.intel.com
+amd.com
+qualcomm.com
+arm.com
+tsmc.com
+samsungsemiconductor.com
+asml.com
+semiconductorengineering.com
+semiengineering.com
+eenewseurope.com
+eetimes.com
+edn.com
+electronicdesign.com
+siliconangle.com
+
+# ============================================
+# GOVERNMENT & OFFICIAL SOURCES (US)
+# ============================================
+whitehouse.gov
+congress.gov
+state.gov
+defense.gov
+justice.gov
+treasury.gov
+commerce.gov
+energy.gov
+hhs.gov
+dhs.gov
+usda.gov
+doi.gov
+ed.gov
+labor.gov
+transportation.gov
+va.gov
+epa.gov
+nasa.gov
+nsf.gov
+nih.gov
+cdc.gov
+fda.gov
+sec.gov
+ftc.gov
+fcc.gov
+federalreserve.gov
+gao.gov
+cbo.gov
+census.gov
+bls.gov
+bea.gov
+usgs.gov
+noaa.gov
+nist.gov
+cisa.gov
+fbi.gov
+cia.gov
+nsa.gov
+dni.gov
+
+# ============================================
+# GOVERNMENT & OFFICIAL SOURCES (INTERNATIONAL)
+# ============================================
+gov.uk
+parliament.uk
+canada.ca
+pm.gc.ca
+europa.eu
+ec.europa.eu
+europarl.europa.eu
+bundestag.de
+bundesregierung.de
+gouvernement.fr
+elysee.fr
+gov.au
+pm.gov.au
+kantei.go.jp
+mofa.go.jp
+gov.cn
+fmprc.gov.cn
+
+# ============================================
+# INTERNATIONAL ORGANIZATIONS
+# ============================================
+un.org
+who.int
+wto.org
+imf.org
+worldbank.org
+oecd.org
+nato.int
+iaea.org
+wipo.int
+itu.int
+icrc.org
+amnesty.org
+hrw.org
+greenpeace.org
+wwf.org
+oxfam.org
+
+# ============================================
+# ACADEMIC INSTITUTIONS (US)
+# ============================================
+mit.edu
+news.mit.edu
+stanford.edu
+news.stanford.edu
+harvard.edu
+news.harvard.edu
+berkeley.edu
+news.berkeley.edu
+caltech.edu
+media.caltech.edu
+princeton.edu
+news.princeton.edu
+yale.edu
+news.yale.edu
+columbia.edu
+news.columbia.edu
+uchicago.edu
+news.uchicago.edu
+upenn.edu
+penntoday.upenn.edu
+cornell.edu
+news.cornell.edu
+duke.edu
+today.duke.edu
+northwestern.edu
+news.northwestern.edu
+jhu.edu
+hub.jhu.edu
+cmu.edu
+cmu.edu/news
+washington.edu
+uw.edu
+ucla.edu
+newsroom.ucla.edu
+usc.edu
+news.usc.edu
+umich.edu
+news.umich.edu
+wisc.edu
+news.wisc.edu
+illinois.edu
+news.illinois.edu
+utexas.edu
+news.utexas.edu
+gatech.edu
+news.gatech.edu
+purdue.edu
+purdue.edu/newsroom
+psu.edu
+news.psu.edu
+osu.edu
+news.osu.edu
+nyu.edu
+nyu.edu/about/news-publications
+bu.edu
+bu.edu/articles
+rochester.edu
+rochester.edu/newscenter
+brown.edu
+brown.edu/news
+dartmouth.edu
+news.dartmouth.edu
+rice.edu
+news.rice.edu
+vanderbilt.edu
+news.vanderbilt.edu
+emory.edu
+news.emory.edu
+wustl.edu
+source.wustl.edu
+washu.edu
+medicine.washu.edu
+tufts.edu
+now.tufts.edu
+northeastern.edu
+news.northeastern.edu
+ucdavis.edu
+ucdavis.edu/news
+ucsd.edu
+today.ucsd.edu
+ucsb.edu
+news.ucsb.edu
+uci.edu
+news.uci.edu
+
+# ============================================
+# ACADEMIC INSTITUTIONS (UK)
+# ============================================
+ox.ac.uk
+ox.ac.uk/news
+cam.ac.uk
+cam.ac.uk/news
+imperial.ac.uk
+imperial.ac.uk/news
+ucl.ac.uk
+ucl.ac.uk/news
+ed.ac.uk
+ed.ac.uk/news
+manchester.ac.uk
+manchester.ac.uk/discover
+kcl.ac.uk
+kcl.ac.uk/news
+lse.ac.uk
+lse.ac.uk/News
+warwick.ac.uk
+warwick.ac.uk/newsandevents
+bristol.ac.uk
+bristol.ac.uk/news
+glasgow.ac.uk
+gla.ac.uk/news
+birmingham.ac.uk
+birmingham.ac.uk/news
+leeds.ac.uk
+leeds.ac.uk/news
+sheffield.ac.uk
+sheffield.ac.uk/news
+nottingham.ac.uk
+nottingham.ac.uk/news
+southampton.ac.uk
+southampton.ac.uk/news
+durham.ac.uk
+durham.ac.uk/news
+exeter.ac.uk
+exeter.ac.uk/news
+
+# ============================================
+# ACADEMIC INSTITUTIONS (EUROPE)
+# ============================================
+ethz.ch
+news.ethz.ch
+epfl.ch
+news.epfl.ch
+mpg.de
+tudelft.nl
+kuleuven.be
+uu.nl
+uva.nl
+kit.edu
+lmu.de
+tum.de
+hu-berlin.de
+fu-berlin.de
+uzh.ch
+unige.ch
+unimelb.edu.au
+sydney.edu.au
+anu.edu.au
+auckland.ac.nz
+
+# ============================================
+# RESEARCH INSTITUTIONS & LABS
+# ============================================
+lanl.gov
+lbl.gov
+ornl.gov
+anl.gov
+pnnl.gov
+sandia.gov
+llnl.gov
+inl.gov
+nrel.gov
+jpl.nasa.gov
+gsfc.nasa.gov
+fermilab.gov
+slac.stanford.edu
+bnl.gov
+jlab.org
+cern.ch
+home.cern
+desy.de
+kek.jp
+riken.jp
+csiro.au
+cnrs.fr
+fraunhofer.de
+maxplanck.de
+helmholtz.de
+
+# ============================================
+# THINK TANKS & POLICY RESEARCH
+# ============================================
+brookings.edu
+cfr.org
+rand.org
+carnegieendowment.org
+csis.org
+heritage.org
+aei.org
+cato.org
+hoover.org
+piie.com
+newamerica.org
+aspeninstitute.org
+wilsoncenter.org
+atlanticcouncil.org
+chathamhouse.org
+iiss.org
+sipri.org
+rusi.org
+odi.org
+cgdev.org
+
+# ============================================
+# FINANCIAL & BUSINESS DATA
+# ============================================
+sec.gov
+federalreserve.gov
+imf.org
+worldbank.org
+bis.org
+ecb.europa.eu
+boj.or.jp
+bankofengland.co.uk
+snb.ch
+rba.gov.au
+nyse.com
+nasdaq.com
+cmegroup.com
+ice.com
+lseg.com
+moodys.com
+spglobal.com
+fitchratings.com
+morningstar.com
+yahoofinance.com
+marketwatch.com
+barrons.com
+investopedia.com
+seekingalpha.com
+zacks.com
+
+# ============================================
+# CYBERSECURITY
+# ============================================
+cisa.gov
+nist.gov
+schneier.com
+krebsonsecurity.com
+threatpost.com
+darkreading.com
+bleepingcomputer.com
+thehackernews.com
+securityweek.com
+infosecurity-magazine.com
+cyberscoop.com
+federalnewsnetwork.com
+nextgov.com
+scmagazine.com
+csoonline.com
+securityintelligence.com
+securelist.com
+welivesecurity.com
+blog.malwarebytes.com
+us-cert.cisa.gov
+cert.org
+mitre.org
+
+# ============================================
+# MAJOR TECH COMPANIES (Official Blogs/Newsrooms)
+# ============================================
+blog.google
+googleblog.com
+developers.google.com
+cloud.google.com/blog
+blog.chromium.org
+android-developers.googleblog.com
+developer.apple.com
+apple.com/newsroom
+developer.android.com
+blogs.microsoft.com
+microsoft.com/en-us/research
+devblogs.microsoft.com
+azure.microsoft.com/blog
+about.fb.com
+engineering.fb.com
+ai.meta.com
+engineering.linkedin.com
+blog.twitter.com
+developer.twitter.com
+aws.amazon.com/blogs
+aboutamazon.com
+developer.amazon.com
+blog.salesforce.com
+engineering.salesforce.com
+oracle.com/news
+blogs.oracle.com
+blog.cloudflare.com
+slack.engineering
+engineering.atspotify.com
+netflixtechblog.com
+uber.com/blog
+eng.uber.com
+airbnb.io
+medium.com/airbnb-engineering
+blog.dropbox.com
+dropbox.tech
+blog.discord.com
+discord.com
+github.blog
+github.com/readme
+about.gitlab.com/blog
+engineering.snap.com
+stripe.com/blog
+shopify.engineering
+pinterest.engineering
+square.github.io
+redditblog.com
+tumblr.com/engineering
+palantir.com/blog
+databricks.com/blog
+snowflake.com/blog
+elastic.co/blog
+mongodb.com/blog
+redis.com/blog
+cockroachlabs.com/blog
+confluent.io/blog
+hashicorp.com/blog
+datadoghq.com/blog
+splunk.com/blog
+
+# ============================================
+# FACT-CHECKING & MEDIA ANALYSIS
+# ============================================
+factcheck.org
+politifact.com
+snopes.com
+fullfact.org
+poynter.org
+niemanlab.org
+cjr.org
+mediamatters.org
+reuters.com/fact-check
+apnews.com/hub/ap-fact-check
+
+# ============================================
+# AUTOMOTIVE & TRANSPORTATION
+# ============================================
+media.ford.com
+media.gm.com
+media.stellantis.com
+stellantis.com
+newsroom.toyota.com
+hondanews.com
+nissannews.com
+media.vw.com
+media.daimler.com
+bmwgroup.com/en/news
+newsroom.porsche.com
+media.tesla.com
+prnewswire.com
+electrek.co
+insideevs.com
+motortrend.com
+caranddriver.com
+autoblog.com
+jalopnik.com
+thedrive.com
+greencarreports.com
+
+# ============================================
+# DEFENSE & AEROSPACE
+# ============================================
+defense.gov
+army.mil
+navy.mil
+af.mil
+marines.mil
+spaceforce.mil
+lockheedmartin.com/en-us/news
+boeing.com/company/news
+northropgrumman.com/news
+rtx.com/news
+gd.com/news
+l3harris.com/newsroom
+baesystems.com/en/newsroom
+airbus.com/en/newsroom
+safran-group.com/media
+thalesgroup.com/en/global/press-releases
+leonardocompany.com/en/press-releases
+defensenews.com
+janes.com
+aviationweek.com
+flightglobal.com
+airforcemag.com
+defensedaily.com
+
+# ============================================
+# LEGAL & POLICY
+# ============================================
+scotusblog.com
+law.cornell.edu
+justia.com
+oyez.org
+supremecourt.gov
+uscourts.gov
+courtlistener.com
+lawfareblog.com
+volokh.com
+reason.com
+eff.org
+aclu.org
+epic.org
+freedomhouse.org
+transparency.org
+accessnow.org
+
+# ============================================
+# CRYPTO & BLOCKCHAIN
+# ============================================
+coindesk.com
+cointelegraph.com
+decrypt.co
+theblock.co
+defiant.io
+ethereum.org
+bitcoin.org
+binance.com/en/blog
+blog.kraken.com
+blog.coinbase.com
+consensys.io/blog
+chainanalysis.com/blog
+
+# ============================================
+# GAMING & ENTERTAINMENT TECH
+# ============================================
+ign.com
+gamespot.com
+polygon.com
+kotaku.com
+pcgamer.com
+rockpapershotgun.com
+eurogamer.net
+gamedeveloper.com
+unrealengine.com/blog
+unity.com/blog
+epicgames.com/site/news
+playstation.com/blog
+xbox.com/news
+nintendo.com/whatsnew
+
+# ============================================
+# MISCELLANEOUS TRUSTED SOURCES
+# ============================================
+c-span.org
+pewresearch.org
+gallup.com
+realclearpolitics.com
+fivethirtyeight.com
+statista.com
+ourworldindata.org
+worldometers.info
+tradingeconomics.com
+macrotrends.net
+datausa.io
+kaggle.com
+paperswithcode.com
+acm.org
+ieee.org
+siam.org
+ams.org
+
+# Note: This is a comprehensive allowlist covering major news, academic,
+# government, research, and technology sources. Add new domains as needed.
+# Submissions with sources not on this list will generate warnings during review.

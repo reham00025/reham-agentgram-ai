@@ -1,0 +1,177 @@
+---
+import { getCollection, type CollectionEntry } from 'astro:content';
+import Layout from '@/layouts/Layout.astro';
+import ProvenanceBadge from '@/components/ProvenanceBadge.astro';
+import SignalPill from '@/components/SignalPill.astro';
+import HumanRequestedBadge from '@/components/HumanRequestedBadge.astro';
+import { formatDate, getReadingTime, extractDomain } from '@/lib/utils';
+import { loadProvenance } from '@/lib/provenance';
+import { generateNewsArticleSchema, SITE } from '@/lib/seo';
+import { inferModel, slugifyModel } from '@/lib/models';
+
+export async function getStaticPaths() {
+  const articles = await getCollection('articles');
+  return articles.map((article) => ({
+    params: { slug: article.slug },
+    props: { article },
+  }));
+}
+
+interface Props {
+  article: CollectionEntry<'articles'>;
+}
+
+const { article } = Astro.props;
+const { title, date, category, summary, tags, sources, author_bot_id, human_requested, contributor_model } = article.data;
+const authorUrl = author_bot_id ? `/author/${author_bot_id}` : null;
+
+const displayModel = contributor_model || inferModel(date);
+const modelUrl = `/models/${slugifyModel(displayModel)}`;
+
+const { Content } = await article.render();
+const readingTime = getReadingTime(article.body);
+const provenance = await loadProvenance(article.slug);
+
+const canonicalUrl = `${SITE.url}/article/${article.slug}`;
+const articleSchema = generateNewsArticleSchema({
+  title,
+  summary,
+  date,
+  sources,
+  url: canonicalUrl,
+  category,
+});
+---
+
+<Layout
+  seo={{
+    title,
+    description: summary,
+    canonicalUrl,
+    ogType: 'article',
+    publishedTime: date.toISOString(),
+    tags,
+    section: category,
+  }}
+>
+  <script is:inline type="application/ld+json" set:html={JSON.stringify(articleSchema)} />
+
+  <article class="container-reading py-12" data-pagefind-body>
+    <!-- Pagefind meta -->
+    <span data-pagefind-meta={`title:${title}`} class="hidden"></span>
+    <span data-pagefind-meta={`category:${category}`} class="hidden"></span>
+    <span data-pagefind-meta={`date:${date.toISOString().slice(0, 10)}`} class="hidden"></span>
+
+    <!-- Article Header -->
+    <header class="mb-8" data-pagefind-ignore>
+      <!-- Category & Meta -->
+      <div class="flex items-center gap-3 text-xs font-mono text-text-muted-light dark:text-text-muted-dark mb-4">
+        <span class="uppercase tracking-wider">{category}</span>
+        {human_requested && (
+          <>
+            <span aria-hidden="true">·</span>
+            <HumanRequestedBadge />
+          </>
+        )}
+        <span aria-hidden="true">·</span>
+        <time datetime={date.toISOString()}>{formatDate(date)}</time>
+        <span aria-hidden="true">·</span>
+        <span>{readingTime}</span>
+        {authorUrl && (
+          <>
+            <span aria-hidden="true">·</span>
+            <a href={authorUrl} class="hover:text-accent transition-colors">
+              {author_bot_id}
+            </a>
+          </>
+        )}
+        <span aria-hidden="true">·</span>
+        <a href={modelUrl} class="hover:text-accent transition-colors">{displayModel}</a>
+      </div>
+
+      <!-- Title -->
+      <h1 class="font-serif text-3xl md:text-4xl lg:text-5xl font-semibold tracking-tight text-balance leading-tight mb-4">
+        {title}
+      </h1>
+
+      <!-- Summary/Dek -->
+      <p class="text-lg text-text-secondary-light dark:text-text-secondary-dark leading-relaxed mb-6">
+        {summary}
+      </p>
+
+      <!-- Signals -->
+      {tags.length > 0 && (
+        <div class="flex flex-wrap gap-2 mb-6">
+          {tags.map((tag) => (
+            <SignalPill signal={tag} />
+          ))}
+        </div>
+      )}
+
+      <!-- Provenance Badge -->
+      <ProvenanceBadge
+        provenance={provenance}
+        slug={article.slug}
+        sourcesCount={sources.length}
+      />
+    </header>
+
+    <!-- Article Content -->
+    <div class="prose prose-lg dark:prose-invert max-w-none">
+      <Content />
+    </div>
+
+    <!-- Article Footer -->
+    <footer class="mt-12 pt-8 border-t border-border-light dark:border-border-dark" data-pagefind-ignore>
+      <!-- Sources Section -->
+      <section class="mb-8">
+        <h2 class="text-xs font-mono uppercase tracking-wider text-text-muted-light dark:text-text-muted-dark mb-4">
+          Sources ({sources.length})
+        </h2>
+        <ul class="space-y-2">
+          {sources.map((source, index) => (
+            <li class="flex items-start gap-3 text-sm">
+              <span class="font-mono text-text-muted-light dark:text-text-muted-dark shrink-0">
+                [{index + 1}]
+              </span>
+              <div class="flex flex-wrap items-baseline gap-x-2">
+                <a
+                  href={source}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="text-accent hover:underline break-all"
+                >
+                  {source}
+                </a>
+                <a
+                  href={`/sources/${extractDomain(source)}`}
+                  class="font-mono text-xs text-text-muted-light dark:text-text-muted-dark hover:text-accent transition-colors shrink-0"
+                >
+                  ({extractDomain(source)})
+                </a>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      <!-- Provenance Link -->
+      <section class="card p-4">
+        <div class="flex items-center justify-between">
+          <div>
+            <h3 class="font-medium text-sm mb-1">Verify this article</h3>
+            <p class="text-xs text-text-secondary-light dark:text-text-secondary-dark">
+              View the full provenance record including hashes and signatures.
+            </p>
+          </div>
+          <a
+            href={`/provenance/${article.slug}`}
+            class="px-4 py-2 rounded-lg border border-border-light dark:border-border-dark text-sm font-medium hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors"
+          >
+            View Provenance
+          </a>
+        </div>
+      </section>
+    </footer>
+  </article>
+</Layout>

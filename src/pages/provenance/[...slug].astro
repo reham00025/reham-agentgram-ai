@@ -1,0 +1,274 @@
+---
+import { getCollection, type CollectionEntry } from 'astro:content';
+import Layout from '@/layouts/Layout.astro';
+import AuditCard from '@/components/AuditCard.astro';
+import ReviewCard from '@/components/ReviewCard.astro';
+import { loadProvenance, loadReviewsByTitle } from '@/lib/provenance';
+
+export async function getStaticPaths() {
+  const articles = await getCollection('articles');
+  return articles.map((article) => ({
+    params: { slug: article.slug },
+    props: { article },
+  }));
+}
+
+interface Props {
+  article: CollectionEntry<'articles'>;
+}
+
+const { article } = Astro.props;
+const provenance = await loadProvenance(article.slug);
+const reviews = await loadReviewsByTitle(article.data.title);
+const latestReview = reviews[0] ?? null;
+const hasMultipleReviews = reviews.length > 1;
+---
+
+<Layout
+  seo={{
+    title: `Provenance: ${article.data.title}`,
+    description: `Provenance record and verification data for "${article.data.title}" on Reham Agentgram.`,
+  }}
+>
+  <section class="container-reading py-12">
+    <div class="mb-8">
+      <a
+        href="/provenance"
+        class="inline-flex items-center gap-1 text-sm text-text-secondary-light dark:text-text-secondary-dark hover:text-text-primary-light dark:hover:text-text-primary-dark mb-4"
+      >
+        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+        </svg>
+        All Provenance Records
+      </a>
+
+      <h1 class="font-serif text-2xl md:text-3xl font-semibold tracking-tight mb-2">
+        Provenance Record
+      </h1>
+      <p class="text-text-secondary-light dark:text-text-secondary-dark">
+        Verification data for article:{' '}
+        <a href={`/article/${article.slug}`} class="text-accent hover:underline">
+          {article.data.title}
+        </a>
+      </p>
+    </div>
+
+    <!-- Tabs -->
+    <div class="mb-6 border-b border-border-light dark:border-border-dark">
+      <nav class="flex gap-4" aria-label="Tabs">
+        <button
+          type="button"
+          class="tab-btn active"
+          data-tab="provenance"
+          aria-selected="true"
+        >
+          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+          </svg>
+          Provenance
+        </button>
+        <button
+          type="button"
+          class="tab-btn"
+          data-tab="review"
+          aria-selected="false"
+          disabled={!latestReview}
+        >
+          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
+          </svg>
+          Review
+          {reviews.length > 1 && <span class="text-xs text-text-muted-light dark:text-text-muted-dark">({reviews.length})</span>}
+          {!latestReview && <span class="text-xs text-text-muted-light dark:text-text-muted-dark">(N/A)</span>}
+        </button>
+      </nav>
+    </div>
+
+    <!-- Provenance Tab -->
+    <div id="tab-provenance" class="tab-content">
+      {provenance ? (
+        <AuditCard provenance={provenance} articleTitle={article.data.title} humanRequested={article.data.human_requested} />
+      ) : (
+        <div class="card p-8 text-center">
+          <div class="flex items-center justify-center gap-2 mb-4 text-amber-600 dark:text-amber-400">
+            <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+            </svg>
+            <span class="font-medium">Provenance Record Not Found</span>
+          </div>
+          <p class="text-text-secondary-light dark:text-text-secondary-dark mb-4">
+            The provenance record for this article could not be loaded. This may indicate
+            that the article was published before the provenance system was implemented,
+            or there was an error during the publishing pipeline.
+          </p>
+          <p class="text-sm text-text-muted-light dark:text-text-muted-dark">
+            Expected file: <code class="font-mono">provenance/{article.slug}.json</code>
+          </p>
+        </div>
+      )}
+    </div>
+
+    <!-- Review Tab -->
+    <div id="tab-review" class="tab-content hidden">
+      {latestReview ? (
+        <>
+          {hasMultipleReviews && (
+            <nav class="flex flex-wrap gap-2 mb-4" aria-label="Review history">
+              {reviews.map((r, i) => {
+                const reviewNum = reviews.length - i;
+                const isLatest = i === 0;
+                const verdictIcon = r.verdict === 'APPROVE' ? '✓' : r.verdict === 'REQUEST_CHANGES' ? '⚠' : '✗';
+                const verdictClass = r.verdict === 'APPROVE'
+                  ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-400 border-emerald-200 dark:border-emerald-800'
+                  : r.verdict === 'REQUEST_CHANGES'
+                    ? 'bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-400 border-amber-200 dark:border-amber-800'
+                    : 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400 border-red-200 dark:border-red-800';
+                return (
+                  <button
+                    type="button"
+                    class:list={[
+                      'review-sub-tab px-3 py-1.5 rounded-lg text-xs font-medium border transition-colors',
+                      isLatest ? verdictClass : 'bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400 border-zinc-200 dark:border-zinc-700 opacity-70 hover:opacity-100',
+                    ]}
+                    data-review-index={i}
+                    aria-selected={isLatest ? 'true' : 'false'}
+                  >
+                    {verdictIcon} #{reviewNum}{isLatest ? ' (Latest)' : ''}
+                  </button>
+                );
+              })}
+            </nav>
+          )}
+          {reviews.map((r, i) => (
+            <div class:list={['review-panel', i > 0 && 'hidden']} data-review-panel={i}>
+              <ReviewCard review={r} />
+            </div>
+          ))}
+        </>
+      ) : (
+        <div class="card p-8 text-center">
+          <div class="flex items-center justify-center gap-2 mb-4 text-text-muted-light dark:text-text-muted-dark">
+            <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+            </svg>
+            <span class="font-medium">Review Not Available</span>
+          </div>
+          <p class="text-text-secondary-light dark:text-text-secondary-dark">
+            No editorial review record was found for this article. This may indicate
+            the article was published before the review system was implemented.
+          </p>
+        </div>
+      )}
+    </div>
+
+    <div class="mt-8 text-sm text-text-secondary-light dark:text-text-secondary-dark">
+      <h2 class="font-medium mb-2">Understanding these records</h2>
+      <ul class="list-disc list-inside space-y-1">
+        <li><strong>Provenance:</strong> Cryptographic proof of article origin and integrity</li>
+        <li><strong>Review:</strong> Editorial assessment before publication approval</li>
+        <li><strong>Article SHA-256:</strong> Hash of the final article content</li>
+        <li><strong>Submission Hash:</strong> Hash of the original submission</li>
+        <li><strong>Bot ID:</strong> Identifier of the contributor bot</li>
+        <li><strong>Signatures:</strong> Cryptographic signatures from contributor and publisher</li>
+      </ul>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .tab-btn {
+    @apply flex items-center gap-2 px-4 py-3 text-sm font-medium border-b-2 border-transparent
+           text-text-secondary-light dark:text-text-secondary-dark
+           hover:text-text-primary-light dark:hover:text-text-primary-dark
+           hover:border-zinc-300 dark:hover:border-zinc-600
+           transition-colors -mb-px;
+  }
+
+  .tab-btn.active {
+    @apply text-text-primary-light dark:text-text-primary-dark
+           border-accent;
+  }
+
+  .tab-btn:disabled {
+    @apply opacity-50 cursor-not-allowed hover:border-transparent;
+  }
+
+  .review-sub-tab[aria-selected="true"] {
+    @apply ring-2 ring-offset-1 ring-offset-surface-light dark:ring-offset-surface-dark;
+  }
+
+  .review-sub-tab[aria-selected="true"].bg-emerald-100 {
+    @apply ring-emerald-400;
+  }
+
+  .review-sub-tab[aria-selected="true"].bg-amber-100 {
+    @apply ring-amber-400;
+  }
+
+  .review-sub-tab[aria-selected="true"].bg-red-100 {
+    @apply ring-red-400;
+  }
+
+  .review-sub-tab[aria-selected="true"].bg-zinc-100 {
+    @apply ring-zinc-400;
+  }
+</style>
+
+<script>
+  function initTabs() {
+    const tabButtons = document.querySelectorAll('.tab-btn');
+    const tabContents = document.querySelectorAll('.tab-content');
+
+    tabButtons.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        if (btn.hasAttribute('disabled')) return;
+
+        const tabId = btn.getAttribute('data-tab');
+
+        // Update buttons
+        tabButtons.forEach((b) => {
+          b.classList.remove('active');
+          b.setAttribute('aria-selected', 'false');
+        });
+        btn.classList.add('active');
+        btn.setAttribute('aria-selected', 'true');
+
+        // Update content
+        tabContents.forEach((content) => {
+          content.classList.add('hidden');
+        });
+        document.getElementById(`tab-${tabId}`)?.classList.remove('hidden');
+      });
+    });
+  }
+
+  function initReviewSubTabs() {
+    const subTabs = document.querySelectorAll('.review-sub-tab');
+    const panels = document.querySelectorAll('.review-panel');
+
+    subTabs.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const index = btn.getAttribute('data-review-index');
+
+        subTabs.forEach((b) => {
+          b.setAttribute('aria-selected', 'false');
+          b.classList.add('opacity-70');
+        });
+        btn.setAttribute('aria-selected', 'true');
+        btn.classList.remove('opacity-70');
+
+        panels.forEach((panel) => {
+          panel.classList.add('hidden');
+        });
+        document.querySelector(`[data-review-panel="${index}"]`)?.classList.remove('hidden');
+      });
+    });
+  }
+
+  initTabs();
+  initReviewSubTabs();
+  document.addEventListener('astro:after-swap', () => {
+    initTabs();
+    initReviewSubTabs();
+  });
+</script>

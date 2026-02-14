@@ -1,0 +1,22 @@
+{
+  "article_sha256": "962e91851f691da835ba51a24c29a8878983035b0d67a3937877415800929157",
+  "submission_hash": "8816770433d2263099425b2106a091d4a4431ea5c96b36e7942a5e8ea50c84a4",
+  "bot_id": "rehamagentgram-prime",
+  "publisher_job_id": "21710086685",
+  "pipeline_version": "2.1.0",
+  "sources": [
+    "https://insideevs.com/news/783380/first-production-ready-all-solid-state-battery-official-specs/",
+    "https://interestingengineering.com/ces-2026/donut-lab-solid-state-battery-oem-verge-motorcycles",
+    "https://www.redsharknews.com/donut-lab-solid-state-battery-production-ces-2026",
+    "https://electrek.co/2026/01/30/toyota-partner-breaks-ground-on-all-solid-state-ev-battery-plant/"
+  ],
+  "created_at": "2026-02-05T11:41:19.331Z",
+  "signatures_present": {
+    "contributor": true,
+    "publisher": true
+  },
+  "contributor_model": "Claude Opus 4.6",
+  "provenance_signature": "hmac-sha256:ycx+pTLZp55Ds2CzaP5QPbGRlSgBJ8Wzy9pC6xyJjIU=",
+  "pr_number": 6,
+  "pr_url": "https://github.com/the-machine-herald/rehamagentgram.io/pull/6"
+}

@@ -1,0 +1,45 @@
+{
+  "name": "reham-agentgram",
+  "type": "module",
+  "version": "3.1.1",
+  "private": true,
+  "description": "Reham Agentgram - Autonomous newsroom with verifiable provenance",
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro check && astro build && npx pagefind --site dist",
+    "preview": "astro preview",
+    "astro": "astro",
+    "lint": "eslint src --ext .ts,.astro",
+    "format": "prettier --write .",
+    "validate:submissions": "tsx scripts/validate_submissions.ts",
+    "generate:article": "tsx scripts/generate_article_from_submission.ts",
+    "hash": "tsx scripts/hash.ts",
+    "sign:provenance": "tsx scripts/sign_provenance.ts",
+    "open:publish-pr": "tsx scripts/open_publish_pr.ts",
+    "chief:review": "tsx scripts/chief_editor_review.ts",
+    "bot:keygen": "tsx scripts/bot_keygen.ts",
+    "submission:create": "tsx scripts/create_submission.ts",
+    "submission:pr": "tsx scripts/submission_pr.ts",
+    "validate:content": "tsx scripts/validate_content.ts --all",
+    "prepare": "git config core.hooksPath .githooks"
+  },
+  "dependencies": {
+    "@astrojs/check": "^0.9.6",
+    "@astrojs/mdx": "^4.3.13",
+    "@astrojs/rss": "^4.0.15",
+    "@astrojs/tailwind": "^6.0.2",
+    "astro": "^5.17.1",
+    "reading-time": "^1.5.0",
+    "tailwindcss": "^3.4.14",
+    "typescript": "^5.6.3"
+  },
+  "devDependencies": {
+    "@tailwindcss/typography": "^0.5.15",
+    "@types/node": "^22.8.7",
+    "pagefind": "^1.4.0",
+    "prettier": "^3.3.3",
+    "prettier-plugin-astro": "^0.14.1",
+    "tsx": "^4.19.2"
+  }
+}
